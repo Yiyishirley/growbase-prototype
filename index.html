@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>GrowBase — Lifetime software deals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1d1d1f; --ink2:#424245; --muted:#6e6e73; --faint:#86868b;
+  --line:#d2d2d7; --line2:#e8e8ed; --soft:#f5f5f7; --bg:#fff;
+  --accent:#0a5c45; --accent-soft:#e6f0ec;
+  --blue:#0066cc;
+  --ok:#1d7f4e; --warn:#b26a00; --bad:#c4291c;
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.47;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.caps{text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:500}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;height:48px;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08)}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:28px}
+.brand{font-weight:700;letter-spacing:.32em;font-size:13px}
+.nav-links{display:flex;gap:26px;flex:1;justify-content:center}
+.nav-links a{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);transition:color .2s}
+.nav-links a:hover,.nav-links a.on{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.icon-btn{position:relative;width:32px;height:32px;display:grid;place-items:center;border-radius:50%}
+.icon-btn:hover{background:var(--soft)}
+.icon-btn svg{width:17px;height:17px}
+.dot{position:absolute;top:4px;right:4px;min-width:15px;height:15px;border-radius:8px;background:var(--bad);color:#fff;font-size:9px;font-weight:600;display:grid;place-items:center;padding:0 3px}
+.role-pill{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:980px;padding:5px 12px 5px 6px;font-size:12px}
+.role-pill .av{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px;font-weight:600;display:grid;place-items:center}
+.menu-btn{display:none}
+
+/* SUBNAV (Apple style) */
+.subnav{position:sticky;top:48px;z-index:40;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08)}
+.subnav .wrap{height:52px;display:flex;align-items:center;justify-content:space-between}
+.subnav h2{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.subnav .crumbs{font-size:12px;color:var(--muted)}
+.subnav .crumbs a:hover{color:var(--blue)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:0 22px;border-radius:980px;font-size:14px;font-weight:500;transition:all .2s;white-space:nowrap}
+.btn-dark{background:var(--ink);color:#fff}.btn-dark:hover{background:#000}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#0071e3}
+.btn-light{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn-light:hover{border-color:var(--ink)}
+.btn-ghost{color:var(--blue);padding:0 4px;height:auto}.btn-ghost:hover{text-decoration:underline}
+.btn-red{background:#fff;color:var(--bad);border:1px solid #f0c4bf}.btn-red:hover{background:#fdf2f1}
+.btn-sm{height:32px;padding:0 14px;font-size:13px}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.btn-hero-dark{background:rgba(23,26,32,.85);color:#fff;min-width:220px;border-radius:4px;height:42px}
+.btn-hero-light{background:rgba(244,244,244,.65);color:#171a20;min-width:220px;border-radius:4px;height:42px;backdrop-filter:blur(8px)}
+
+/* HERO */
+.hero{position:relative;height:calc(100vh - 48px);min-height:560px;max-height:900px;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff;background:#0b0b0d}
+.hero .copy{position:relative;z-index:2;padding:9vh 22px 0}
+.hero h1{font-size:clamp(40px,7vw,80px);font-weight:700;letter-spacing:-.035em;line-height:1.02}
+.hero p{font-size:clamp(17px,2vw,22px);color:#a1a1a6;margin-top:14px;font-weight:400}
+.hero .ctas{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.hero-stage{position:absolute;left:50%;top:420px;transform:translateX(-50%);width:min(860px,92vw);z-index:1}.hero-stage .art{background:transparent!important;overflow:visible}.hero-stage .win{width:100%;transform:none}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 85%,rgba(10,92,69,.55),transparent 70%)}
+
+.band{padding:110px 0;text-align:center}
+.band.soft{background:var(--soft)}
+.band.dark{background:#000;color:#f5f5f7}
+.band h2{font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:-.03em;line-height:1.06}
+.band .lead{font-size:clamp(17px,2vw,21px);color:var(--muted);margin:14px auto 0;max-width:640px}
+.band.dark .lead{color:#a1a1a6}
+.band .ctas{display:flex;gap:22px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.link-arrow{color:var(--blue);font-size:17px}.link-arrow:hover{text-decoration:underline}
+.band.dark .link-arrow{color:#2997ff}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:64px;border-top:1px solid #333}
+.stats div{padding:28px 10px;border-right:1px solid #333}.stats div:last-child{border-right:0}
+.stats b{display:block;font-size:44px;font-weight:600;letter-spacing:-.03em}
+.stats span{font-size:12px;color:#86868b;letter-spacing:.16em;text-transform:uppercase}
+
+/* APP WINDOW ART */
+.art{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/11;display:grid;place-items:center}
+.win{width:78%;aspect-ratio:16/10;background:#fff;border-radius:9px;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);display:grid;grid-template-rows:18px 1fr;overflow:hidden;transform:translateY(6%)}
+.win .bar{background:#f2f2f4;display:flex;gap:4px;align-items:center;padding:0 7px}
+.win .bar i{width:6px;height:6px;border-radius:50%;background:#d6d6db}
+.win .body{display:grid;grid-template-columns:22% 1fr}
+.win .side{background:#fafafa;border-right:1px solid #eee;padding:9px 7px;display:flex;flex-direction:column;gap:5px}
+.win .side i{height:5px;border-radius:3px;background:#e4e4e8}
+.win .side i.a{background:var(--h)}
+.win .main{padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.win .main .t{height:9px;width:45%;border-radius:3px;background:#1d1d1f}
+.win .main .l{height:5px;border-radius:3px;background:#e7e7eb}
+.win .main .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:3px}
+.win .main .row b{height:34px;border-radius:5px;background:#f3f3f6;border:1px solid #ececf0}
+.win .main .row b:first-child{background:var(--h);opacity:.9}
+.win .main .chart{height:38px;border-radius:5px;background:linear-gradient(180deg,transparent 40%,color-mix(in srgb,var(--h) 18%,transparent));border-bottom:2px solid var(--h);clip-path:polygon(0 80%,12% 60%,25% 70%,38% 40%,52% 50%,66% 25%,80% 35%,100% 10%,100% 100%,0 100%)}
+.art.big .win{width:84%}
+
+/* DEAL CARDS */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:#fff;border-radius:18px;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;display:flex;flex-direction:column;border:1px solid var(--line2)}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -18px rgba(0,0,0,.25)}
+.card .art{border-radius:0}
+.card .info{padding:20px 22px 22px;display:flex;flex-direction:column;gap:4px;flex:1}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.card h3{font-size:21px;font-weight:600;letter-spacing:-.02em}
+.card .tag{color:var(--muted);font-size:14px;min-height:42px}
+.price{display:flex;align-items:baseline;gap:8px;margin-top:10px}
+.price b{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.price s{color:var(--faint);font-size:14px}
+.price small{font-size:12px;color:var(--muted)}
+.rating{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.stars{color:var(--ink);letter-spacing:1px}
+.hidden-r{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.meter{height:4px;border-radius:2px;background:var(--line2);overflow:hidden;width:70px;display:inline-block}
+.meter i{display:block;height:100%;background:var(--ink)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{height:34px;padding:0 16px;border-radius:980px;border:1px solid var(--line);font-size:13px;display:inline-flex;align-items:center;background:#fff}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.search{height:40px;border-radius:10px;border:1px solid var(--line);padding:0 14px 0 38px;width:280px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2386868b' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") 12px 50% no-repeat}
+
+/* PORTAL */
+.portal>section,.portal>aside{min-width:0}
+.portal{display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;padding:40px 0 100px}
+.side-nav{position:sticky;top:120px;align-self:start}
+.side-nav .who{display:flex;gap:12px;align-items:center;padding-bottom:20px;margin-bottom:14px;border-bottom:1px solid var(--line2)}
+.side-nav .who .av{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px}
+.side-nav .who b{display:block;font-size:14px;font-weight:600}
+.side-nav .who span{font-size:12px;color:var(--muted)}
+.side-nav .grp{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:16px 10px 6px}
+.side-nav a{display:block;padding:8px 10px;border-radius:8px;font-size:14px;color:var(--ink2)}
+.side-nav a:hover{background:var(--soft)}
+.side-nav a.on{background:var(--soft);color:var(--ink);font-weight:600}
+.side-nav a small{display:block;font-size:11px;color:var(--faint);font-weight:400}
+
+.uc{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;display:inline-flex;gap:8px;align-items:center}
+.uc::before{content:"";width:18px;height:1px;background:var(--accent)}
+.ph{margin-bottom:30px}
+.ph h1{font-size:40px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:8px}
+.ph p{color:var(--muted);font-size:17px;margin-top:8px;max-width:620px}
+
+.panel{background:var(--soft);border-radius:18px;padding:28px}
+.panel.white{background:#fff;border:1px solid var(--line2)}
+.panel h3{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.panel .sub{color:var(--muted);font-size:14px;margin-top:2px}
+.stack{display:flex;flex-direction:column;gap:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+
+/* GROUPED LIST (Apple settings) */
+.glist{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line2)}
+.glist .row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line2);font-size:14px}
+.glist .row:last-child{border-bottom:0}
+.glist .row .k{color:var(--ink)}
+.glist .row .v{color:var(--muted);text-align:right}
+
+/* FORMS */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;font-weight:500;color:var(--ink2);display:flex;justify-content:space-between;gap:8px}
+.inp{height:46px;border-radius:12px;border:1px solid var(--line);padding:0 14px;background:#fff;font-size:15px;width:100%;transition:border .2s,box-shadow .2s}
+textarea.inp{height:auto;min-height:96px;padding:12px 14px;resize:vertical}
+.inp:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,102,204,.12)}
+.inp.err{border-color:var(--bad);box-shadow:0 0 0 4px rgba(196,41,28,.08)}
+.hint{font-size:12px;color:var(--muted)}
+.err-t{font-size:12px;color:var(--bad)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+.switch{position:relative;width:46px;height:28px;border-radius:14px;background:#e9e9eb;transition:.2s;flex:none}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:.2s}
+.switch.on{background:#34c759}.switch.on::after{left:20px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--ink);margin-top:2px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:980px;font-size:12px;font-weight:500;background:var(--soft);color:var(--ink2);white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
+.b-ok{background:#e8f5ee;color:var(--ok)}
+.b-warn{background:#fdf3e1;color:var(--warn)}
+.b-bad{background:#fcebea;color:var(--bad)}
+.b-info{background:#e8f1fb;color:var(--blue)}
+.b-dark{background:#1d1d1f;color:#fff}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
+.tbl th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:500;padding:12px 16px;border-bottom:1px solid var(--line2)}
+.tbl td{padding:14px 16px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl-wrap{border:1px solid var(--line2);border-radius:12px;overflow:auto}
+
+/* STEPPER */
+.stepper{display:flex;gap:0;margin-bottom:30px;border-bottom:1px solid var(--line2);overflow-x:auto}
+.step{flex:1;min-width:120px;padding:0 0 14px;position:relative;font-size:12px;color:var(--faint)}
+.step b{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;margin-bottom:3px}
+.step.done{color:var(--ink2)}
+.step.cur{color:var(--ink);font-weight:600}
+.step.cur::after{content:"";position:absolute;left:0;right:12px;bottom:-1px;height:2px;background:var(--ink)}
+.step.done b::after{content:" ✓";color:var(--ok)}
+
+.par{display:grid;grid-template-columns:1fr 1fr;gap:14px;position:relative}
+.par-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);text-align:center;margin:6px 0 10px;display:flex;align-items:center;gap:10px}
+.par-label::before,.par-label::after{content:"";flex:1;height:3px;background:var(--ink);border-radius:2px}
+.chk{background:#fff;border:1px solid var(--line2);border-radius:12px;padding:16px}
+.chk h4{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.chk ul{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.chk li{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ok{color:var(--ok);font-weight:600}.no{color:var(--bad);font-weight:600}
+.spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--ink);border-radius:50%;animation:sp .8s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.notice{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:12px;font-size:14px;background:var(--soft)}
+.notice.warn{background:#fdf6ea}.notice.bad{background:#fcefee}.notice.ok{background:#ebf6f0}.notice.info{background:#edf4fc}
+.notice b{display:block;margin-bottom:2px}
+.notice svg{flex:none;width:18px;height:18px;margin-top:2px}
+
+/* STATE MACHINE */
+.sm{display:grid;grid-template-columns:1fr 2.1fr 1fr;gap:10px;align-items:stretch;font-size:12px}
+.sm .st{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;background:#fff;color:var(--muted);display:flex;flex-direction:column;justify-content:center;min-height:52px;transition:.3s}
+.sm .st b{color:var(--ink2);font-size:13px;font-weight:600}
+.sm .st.cur{background:var(--ink);border-color:var(--ink);color:#c7c7cc}
+.sm .st.cur b{color:#fff}
+.sm .comp{border:1.5px solid var(--line);border-radius:14px;padding:22px 10px 10px;position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#fafafa}
+.sm .comp.cur{border-color:var(--ink)}
+.sm .comp>span{position:absolute;top:5px;left:12px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.sm .col{display:flex;flex-direction:column;gap:10px}
+.sm .pseudo{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--faint);font-size:11px}
+.sm .pseudo i{width:12px;height:12px;border-radius:50%;background:var(--ink);display:inline-block}
+.sm .pseudo i.fin{background:#fff;border:2px solid var(--ink);box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 6px var(--ink)}
+.sm .pseudo.cur{color:var(--ink);font-weight:600}
+.log{font-size:12px}
+.log td{padding:9px 12px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.trig{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tr-btn{border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:left;background:#fff;transition:.2s}
+.tr-btn:hover{border-color:var(--ink)}
+.tr-btn b{display:block;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600}
+.tr-btn span{font-size:11px;color:var(--muted)}
+.tr-btn.off{opacity:.4;cursor:not-allowed}
+.tr-btn.off:hover{border-color:var(--line)}
+
+/* DETAIL */
+.detail{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;padding:48px 0 90px;align-items:start}
+.detail h1{font-size:48px;font-weight:700;letter-spacing:-.035em;line-height:1.05}
+.buybox{position:sticky;top:130px}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);margin:22px 0}
+.specs div{padding:16px 0;text-align:center;border-right:1px solid var(--line2)}.specs div:last-child{border-right:0}
+.specs b{display:block;font-size:20px;font-weight:600}
+.specs span{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.feat{list-style:none;display:flex;flex-direction:column;gap:12px;font-size:15px;margin-top:8px}
+.feat li{display:flex;gap:12px}
+.feat li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--ink);margin-top:9px;flex:none}
+
+/* STARS INPUT */
+.star-in{display:flex;gap:6px}
+.star-in button{font-size:34px;line-height:1;color:var(--line);transition:.15s}
+.star-in button.on{color:var(--ink)}
+
+/* TOAST / DRAWER / POPOVER */
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);opacity:0;background:rgba(29,29,31,.92);color:#fff;padding:12px 20px;border-radius:980px;font-size:14px;z-index:100;transition:.35s;pointer-events:none;backdrop-filter:blur(10px);max-width:92vw;text-align:center}
+#toast.show{transform:translate(-50%,0);opacity:1}
+.pop{position:absolute;right:0;top:42px;width:340px;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border:1px solid var(--line2);border-radius:14px;box-shadow:0 24px 50px -20px rgba(0,0,0,.3);padding:8px;display:none;z-index:60}
+.pop.open{display:block}
+.pop .h{padding:10px 12px 6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.pop a,.pop .it{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:9px;font-size:14px}
+.pop a:hover{background:var(--soft)}
+.pop a.on{font-weight:600}
+.pop a.on::after{content:"✓";margin-left:auto}
+.pop .it{flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px solid var(--line2);border-radius:0}
+.pop .it:last-child{border-bottom:0}
+.pop .it small{color:var(--muted);font-size:12px}
+.rel{position:relative}
+
+.guide-fab{position:fixed;right:22px;bottom:22px;z-index:70;height:44px;padding:0 18px;border-radius:980px;background:var(--ink);color:#fff;font-size:13px;display:flex;align-items:center;gap:8px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.drawer{position:fixed;inset:0;z-index:80;display:none}
+.drawer.open{display:block}
+.drawer .scrim{position:absolute;inset:0;background:rgba(0,0,0,.3);backdrop-filter:blur(4px)}
+.drawer .sheet{position:absolute;right:0;top:0;bottom:0;width:min(440px,100vw);background:#fff;padding:28px;overflow:auto;animation:sl .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes sl{from{transform:translateX(30px);opacity:0}}
+.drawer h3{font-size:24px;font-weight:700;letter-spacing:-.02em}
+
+/* UML overlay */
+.uml{display:none}
+body.show-uml .uml{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:10px;font-weight:500;color:#7a3db8;background:#f4ecfb;border-radius:4px;padding:1px 6px;letter-spacing:0;text-transform:none;margin-left:6px;vertical-align:middle}
+
+footer{background:var(--soft);font-size:12px;color:var(--muted);padding:34px 0 80px}
+footer .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:16px}
+footer h5{font-size:12px;color:var(--ink);font-weight:600;margin-bottom:8px}
+footer a{display:block;padding:3px 0}
+footer a:hover{text-decoration:underline}
+
+.fade{animation:fd .5s ease both}
+@keyframes fd{from{opacity:0;transform:translateY(10px)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+hr.sep{border:0;border-top:1px solid var(--line2);margin:8px 0}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:8px 16px;font-size:14px}
+.kv dt{color:var(--muted)}
+
+/* MOBILE */
+@media (max-width:900px){
+  .nav-links{display:none}
+  .nav-links.open{display:flex;position:fixed;top:48px;left:0;right:0;bottom:0;background:#fff;flex-direction:column;justify-content:flex-start;padding:30px 28px;gap:0}
+  .nav-links.open a{font-size:24px;letter-spacing:-.01em;text-transform:none;font-weight:600;padding:12px 0;border-bottom:1px solid var(--line2)}
+  .menu-btn{display:grid}
+  .nav .wrap{gap:10px;justify-content:space-between}
+  .role-pill .rl{display:none}
+  .grid,.three{grid-template-columns:1fr 1fr}
+  .portal{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:20px}
+  .two,.three{grid-template-columns:minmax(0,1fr)}
+  .side-nav{position:static}
+  .side-nav .links{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+  .side-nav .links a{white-space:nowrap;border:1px solid var(--line);border-radius:980px;padding:7px 14px}
+  .side-nav .links a small,.side-nav .grp{display:none}
+  .detail{grid-template-columns:1fr;gap:28px}
+  .buybox{position:static}
+  .sm{grid-template-columns:1fr}
+  footer .cols{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .hero-stage{top:430px}
+  .btn-hero-dark,.btn-hero-light{min-width:0;width:100%}
+  body{font-size:14px}
+  .grid,.three,.two,.form-grid,.par,.trig{grid-template-columns:1fr}
+  .ph h1{font-size:30px}
+  .detail h1{font-size:34px}
+  .search{width:100%}
+  .panel{padding:20px}
+  .stats b{font-size:30px}
+  .kv{grid-template-columns:110px 1fr}
+  .tbl th:nth-child(n+4),.tbl td:nth-child(n+4).hm{display:none}
+  .guide-fab span{display:none}
+  .guide-fab{padding:0 14px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <button class="icon-btn menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16M4 16h16"/></svg></button>
+    <a href="#/" class="brand">GROWBASE</a>
+    <nav class="nav-links" id="navlinks"></nav>
+    <div class="nav-right">
+      <div class="rel">
+        <button class="icon-btn" onclick="togglePop('notif')" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9Z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg><span id="ncount"></span></button>
+        <div class="pop" id="pop-notif"></div>
+      </div>
+      <div class="rel">
+        <button class="role-pill" onclick="togglePop('role')"><span class="av" id="role-av">C</span><span class="rl" id="role-label">Customer</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="pop" id="pop-role"></div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="subnav" id="subnav" style="display:none"></div>
+<main id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><h5>Shop</h5><a href="#/deals">Browse Software Deals</a><a href="#/purchases">My Purchases</a><a href="#/affiliate">Affiliate Program</a></div>
+      <div><h5>Developers</h5><a href="#/dev/profile">Developer Profile</a><a href="#/dev/onboarding">Onboarding</a><a href="#/dev/deals">Manage Deals</a></div>
+      <div><h5>Company</h5><a href="#/careers">Careers — Account Managers</a><a href="#/am/developers">Account Manager Console</a><a href="#/admin/promotions">Admin Console</a></div>
+      <div><h5>Prototype</h5><a href="#/guide">Use Case Map</a><a href="javascript:toggleUML()">Toggle UML class labels</a><a href="javascript:resetDemo()">Reset demo data</a></div>
+    </div>
+    <div>Copyright © 2026 GrowBase Pty Ltd. ISYS1039 prototype — Ziyi Wang (s4189631). All payment and verification services are simulated.</div>
+  </div>
+</footer>
+
+<button class="guide-fab" onclick="openDrawer()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>Prototype guide</span></button>
+<div class="drawer" id="drawer"><div class="scrim" onclick="closeDrawer()"></div><div class="sheet" id="sheet"></div></div>
+<div id="toast"></div>
+
+<script>
+/* ============ ICONS ============ */
+const I={
+ info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+ ok:'<svg viewBox="0 0 24 24" fill="none" stroke="#1d7f4e" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" fill="none" stroke="#b26a00" stroke-width="1.8"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17h.01"/></svg>',
+ bad:'<svg viewBox="0 0 24 24" fill="none" stroke="#c4291c" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
+};
+
+/* ============ DATA ============ */
+const ROLES={
+ customer:{label:'Customer',name:'Ethan Brooks',ini:'EB',home:'#/deals'},
+ developer:{label:'Developer',name:'Mia Chen',ini:'MC',home:'#/dev/onboarding'},
+ am:{label:'Account Manager',name:'Priya Nair',ini:'PN',home:'#/am/developers'},
+ admin:{label:'GrowBase Admin',name:'Mohammad H.',ini:'MH',home:'#/admin/promotions'},
+ affiliate:{label:'Affiliate',name:'Ethan Brooks',ini:'EB',home:'#/affiliate/track'},
+ applicant:{label:'AM Applicant',name:'Jordan Lee',ini:'JL',home:'#/careers'}
+};
+const MENUS={
+ customer:[['Shop',[['#/deals','Browse Software Deals','Explore lifetime deals'],['#/purchases','My Purchases','Rate · Refund / Dispute']]],['Grow',[['#/affiliate','Join Affiliate Program','Earn on referrals']]]],
+ developer:[['Account',[['#/dev/profile','Register / Manage Developer Profile','Account & company details'],['#/dev/onboarding','Onboard Developer','Verification with your AM']]],['Sell',[['#/dev/deals','Create / Manage Software Deal','Verified Developers only']]]],
+ am:[['Console',[['#/am/developers','Manage Assigned Developers','Onboarding reviews'],['#/am/support','Handle Support / Dispute Issues','Refunds · fraud reports']]]],
+ admin:[['Commercial',[['#/admin/promotions','Manage Promotions & Commission','30% flat model'],['#/admin/affiliates','Manage Affiliate Program','Rates & payouts']]],['Trust & People',[['#/admin/trust','Manage Ratings & Trust Controls','20-rating threshold'],['#/admin/recruitment','Manage AM Recruitment','Applicants pipeline']]]],
+ affiliate:[['Affiliate',[['#/affiliate','Join Affiliate Program','Your membership'],['#/affiliate/track','Track Referrals & Commission','Clicks · sales · earnings']]]],
+ applicant:[['Careers',[['#/careers','Apply for AM Position','Account Manager role']]]]
+};
+function seed(){return{
+ role:'customer', uml:false,
+ dev:{firstName:'Mia',lastName:'Chen',email:'mia@lumenlabs.io',company:'Lumen Labs',phone:'+61 412 880 214',country:'Australia',registeredAt:'02 Oct 2026',
+   software:'Inkwell',category:'Writing & Docs',audience:'',description:'A distraction-free long-form editor with AI outline suggestions and version history.',
+   website:'https://lumenlabs.io',facebook:'facebook.com/lumenlabs',x:'x.com/lumenlabs',youtube:'',extra:'',
+   verificationStatus:'Not Started',stage:'profile',am:null,missing:[],amRequest:'',rejectReason:'',attempts:0},
+ deals:[
+  {id:'quillnote',name:'Quillnote',dev:'Northpaw Studio',tag:'AI meeting notes that write themselves.',cat:'Productivity',price:59,was:468,dealType:'Lifetime',state:'Published',ratingCount:248,avg:4.7,openPurchases:312,hue:'#0a5c45',bg:'linear-gradient(160deg,#0f2a22,#0a5c45)'},
+  {id:'shipdeck',name:'Shipdeck',dev:'Harbour & Co',tag:'Changelogs and roadmaps your users actually read.',cat:'Developer Tools',price:79,was:588,dealType:'Lifetime',state:'Published',ratingCount:96,avg:4.5,openPurchases:140,hue:'#1d1d1f',bg:'linear-gradient(160deg,#d9d9de,#f5f5f7)'},
+  {id:'tallyform',name:'Tallyform',dev:'Brightloop',tag:'Forms that feel like a conversation.',cat:'Marketing',price:49,was:348,dealType:'Lifetime',state:'AwaitingRatings',ratingCount:14,avg:4.1,openPurchases:41,hue:'#b26a00',bg:'linear-gradient(160deg,#f3e7d3,#e9d5b3)'},
+  {id:'ledgerly',name:'Ledgerly',dev:'Fernvale Software',tag:'Invoices and receipts, reconciled automatically.',cat:'Finance',price:99,was:720,dealType:'Lifetime',state:'Published',ratingCount:133,avg:4.6,openPurchases:205,hue:'#0066cc',bg:'linear-gradient(160deg,#0b1a33,#16335e)'},
+  {id:'pixelmint',name:'Pixelmint',dev:'Studio Kova',tag:'On-brand graphics in seconds.',cat:'Design',price:69,was:420,dealType:'Lifetime',state:'Published',ratingCount:57,avg:4.4,openPurchases:88,hue:'#7a3db8',bg:'linear-gradient(160deg,#ece4f6,#f7f3fb)'},
+  {id:'relaycast',name:'Relaycast',dev:'Wavetable',tag:'Turn every podcast into twenty clips.',cat:'Media',price:89,was:600,dealType:'Early Access',state:'AwaitingRatings',ratingCount:6,avg:4.3,openPurchases:19,hue:'#c4291c',bg:'linear-gradient(160deg,#1a0f0e,#3a1612)'},
+  {id:'inkwell',name:'Inkwell',dev:'Lumen Labs',tag:'Long-form writing with an editor that listens.',cat:'Writing & Docs',price:69,was:480,dealType:'Lifetime',state:'Draft',ratingCount:0,avg:0,openPurchases:0,hue:'#0a5c45',bg:'linear-gradient(160deg,#f1f4f2,#dfe9e4)',own:true,pausedDays:0,fraudReported:false,investigationCleared:false,fraudConfirmed:false,cleanupComplete:false,log:[{from:'●',to:'Draft',trigger:'(initial)',guard:'',effect:'',type:'Initial'}]}
+ ],
+ purchases:[
+  {id:'GB-10482',dealId:'quillnote',date:'12 Oct 2026',amount:59,rated:false,refund:null},
+  {id:'GB-10517',dealId:'tallyform',date:'19 Oct 2026',amount:49,rated:false,refund:null}
+ ],
+ refunds:[{id:'RF-2031',purchase:'GB-09877',dealId:'shipdeck',customer:'Hannah Ito',type:'Refund',reason:'Feature advertised (GitHub sync) is not available yet.',status:'Pending',requestedAt:'21 Oct 2026'}],
+ reports:[{id:'FR-118',dealId:'tallyform',kind:'Fake 1-star cluster',detail:'7 one-star ratings in 2 hours from accounts created the same day.',status:'Open'}],
+ flagged:[
+  {id:'RT-5531',dealId:'tallyform',stars:1,text:'Useless. Do not buy.',who:'acct created 22 Oct',why:'Same IP as 6 other raters',status:'Flagged'},
+  {id:'RT-5540',dealId:'relaycast',stars:5,text:'Best tool ever!!!',who:'acct created 23 Oct',why:'Rater linked to developer email domain',status:'Flagged'}
+ ],
+ promotions:[{code:'SPRING20',deal:'quillnote',pct:20,active:true,ends:'30 Nov 2026'},{code:'LAUNCH10',deal:'shipdeck',pct:10,active:false,ends:'01 Oct 2026'}],
+ commission:30, threshold:20, affRate:10, blockSelf:true, hideUntil:true,
+ affiliate:{joined:false,trackingCode:'',clickCount:0,payout:'',referrals:[]},
+ affiliates:[{name:'Sofia Marquez',code:'GB-AF-3K9P',clicks:1240,sales:38,earned:224.20,status:'Active'},{name:'Liam O’Connor',code:'GB-AF-8T2D',clicks:410,sales:9,earned:61.10,status:'Active'}],
+ applicants:[{name:'Grace Liu',exp:'4 yrs SaaS customer success',stage:'Interview',applied:'14 Oct 2026'},{name:'Daniel Okafor',exp:'2 yrs partner management',stage:'Applied',applied:'20 Oct 2026'}],
+ application:null,
+ ams:[{name:'Priya Nair',load:11,cap:15,status:'Active'},{name:'Tom Becker',load:15,cap:15,status:'Full'},{name:'Aisha Rahman',load:6,cap:15,status:'On Leave'}],
+ assigned:[{dev:'Northpaw Studio',sw:'Quillnote',status:'Verified',since:'Mar 2026'},{dev:'Brightloop',sw:'Tallyform',status:'Verified',since:'Aug 2026'},{dev:'Wavetable',sw:'Relaycast',status:'Verified',since:'Sep 2026'}],
+ review:{fit:[false,false,false],ev:{website:null,facebook:null,x:null,youtube:null}},
+ notifs:{customer:[{t:'SPRING20 is live',d:'20% off Quillnote until 30 Nov.'}],developer:[{t:'Welcome to GrowBase',d:'Complete onboarding to start selling.'}],am:[],admin:[{t:'Fraud report FR-118',d:'Tallyform rating cluster flagged.'}],affiliate:[],applicant:[]},
+ seen:{}
+}}
+let S;
+try{S=JSON.parse(localStorage.getItem('gb-proto-v1'))||seed()}catch(e){S=seed()}
+function save(){try{localStorage.setItem('gb-proto-v1',JSON.stringify(S))}catch(e){}}
+function resetDemo(){S=seed();save();toast('Demo data reset');location.hash='#/';render()}
+
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s);
+const deal=id=>S.deals.find(d=>d.id===id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money=n=>'$'+Number(n).toFixed(Number(n)%1?2:0);
+const uml=t=>`<span class="uml">${t}</span>`;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800)}
+function notify(role,t,d){S.notifs[role].unshift({t,d});save();renderNav()}
+function go(h){location.hash=h}
+function setRole(r,h){S.role=r;save();closePops();toast('Viewing as '+ROLES[r].label);if(h)go(h);else go(ROLES[r].home);render()}
+function toggleUML(){S.uml=!S.uml;save();document.body.classList.toggle('show-uml',S.uml);toast(S.uml?'UML class attributes shown':'UML labels hidden')}
+function art(d,big){return `<div class="art ${big?'big':''}" style="background:${d.bg};--h:${d.hue}"><div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="body"><div class="side"><i class="a"></i><i></i><i></i><i style="width:70%"></i><i></i></div><div class="main"><div class="t"></div><div class="l"></div><div class="l" style="width:70%"></div><div class="row"><b></b><b></b><b></b></div><div class="chart"></div></div></div></div></div>`}
+function stars(n){return '★★★★★'.slice(0,Math.round(n))+'<span style="color:#d2d2d7">'+'★★★★★'.slice(0,5-Math.round(n))+'</span>'}
+function ratingLine(d){
+ if(d.state==='Published'||(!S.hideUntil&&d.ratingCount>0))return `<span class="rating"><span class="stars">${stars(d.avg)}</span>${d.avg.toFixed(1)} · ${d.ratingCount} ratings</span>`;
+ return `<span class="hidden-r">Ratings hidden <span class="meter"><i style="width:${Math.min(100,d.ratingCount/S.threshold*100)}%"></i></span>${d.ratingCount}/${S.threshold}</span>`}
+const listed=d=>d.state==='AwaitingRatings'||d.state==='Published';
+function promoFor(d){return S.promotions.find(p=>p.deal===d.id&&p.active)}
+function badge(s){const m={'Verified':'b-ok','Published':'b-ok','Approved':'b-ok','Refunded':'b-ok','Active':'b-ok','Hired':'b-ok','Resolved':'b-ok','Cleared':'b-ok',
+ 'Under Review':'b-info','AwaitingRatings':'b-info','Pending':'b-info','Interview':'b-info','Applied':'b-info','Submitted':'b-info','Open':'b-warn',
+ 'Draft':'','Not Started':'','Paused':'b-warn','Incomplete':'b-warn','Additional Evidence Requested':'b-warn','Flagged':'b-warn','On Leave':'b-warn','Full':'b-warn','Investigating':'b-warn',
+ 'Rejected':'b-bad','Suspended':'b-bad','Declined':'b-bad','Removed':'b-bad','Archived':'b-dark','Ended':'b-dark'};
+ const label=s==='AwaitingRatings'?'Listed · Awaiting Ratings':s==='Published'?'Listed · Published':s;return `<span class="badge ${m[s]||''}">${label}</span>`}
+function notice(type,title,body){return `<div class="notice ${type}">${I[type]||I.info}<div><b>${title}</b>${body||''}</div></div>`}
+
+/* ============ NAV / CHROME ============ */
+function renderNav(){
+ const r=ROLES[S.role];
+ $('#role-av').textContent=r.ini;$('#role-label').textContent=r.label;
+ const links=[['#/deals','Deals'],['#/dev/onboarding','Developers'],['#/affiliate','Affiliates'],['#/careers','Careers'],['#/guide','Use Cases']];
+ const h=location.hash||'#/';
+ $('#navlinks').innerHTML=links.map(([u,l])=>`<a href="${u}" class="${h.startsWith(u)?'on':''}" onclick="document.querySelector('.nav-links').classList.remove('open')">${l}</a>`).join('');
+ const n=S.notifs[S.role]||[];const unseen=n.length-(S.seen[S.role]||0);
+ $('#ncount').innerHTML=unseen>0?`<span class="dot">${unseen}</span>`:'';
+ $('#pop-notif').innerHTML=`<div class="h">Notifications · ${r.label}</div>`+(n.length?n.slice(0,6).map(x=>`<div class="it"><b style="font-size:14px">${esc(x.t)}</b><small>${esc(x.d)}</small></div>`).join(''):'<div class="it"><small>You’re all caught up.</small></div>');
+ $('#pop-role').innerHTML=`<div class="h">View prototype as</div>`+Object.entries(ROLES).map(([k,v])=>`<a href="javascript:setRole('${k}')" class="${S.role===k?'on':''}"><span class="av" style="width:26px;height:26px;border-radius:50%;background:${S.role===k?'#1d1d1f':'#e8e8ed'};color:${S.role===k?'#fff':'#424245'};display:grid;place-items:center;font-size:10px;font-weight:600">${v.ini}</span><span>${v.label}<br><small style="color:#86868b;font-size:12px">${v.name}</small></span></a>`).join('');
+ document.body.classList.toggle('show-uml',!!S.uml);
+}
+function togglePop(w){const p=$('#pop-'+w);const o=p.classList.contains('open');closePops();if(!o){p.classList.add('open');if(w==='notif'){S.seen[S.role]=(S.notifs[S.role]||[]).length;save();setTimeout(()=>{$('#ncount').innerHTML=''},50)}}}
+function closePops(){document.querySelectorAll('.pop').forEach(p=>p.classList.remove('open'))}
+document.addEventListener('click',e=>{if(!e.target.closest('.rel'))closePops()});
+function subnav(title,crumbs,right){const s=$('#subnav');s.style.display='';s.innerHTML=`<div class="wrap"><div><div class="crumbs">${crumbs||''}</div><h2>${title}</h2></div><div>${right||''}</div></div>`}
+function noSub(){$('#subnav').style.display='none'}
+function portal(role,active,content){
+ const r=ROLES[role];
+ const mismatch=S.role!==role?`<div style="margin-bottom:22px">${notice('info','You are viewing the '+r.label+' area',`<span class="muted">Switch role to act as ${r.name}. </span><button class="btn-ghost" onclick="setRole('${role}',location.hash)">View as ${r.label} →</button>`)}</div>`:'';
+ return `<div class="wrap"><div class="portal"><aside class="side-nav"><div class="who"><div class="av">${r.ini}</div><div><b>${r.name}</b><span>${r.label}${role==='developer'&&S.dev.verificationStatus==='Verified'?' · Verified':''}</span></div></div><div class="links">${MENUS[role].map(([g,items])=>`<div class="grp">${g}</div>`+items.map(([u,l,s])=>`<a href="${u}" class="${active===u?'on':''}">${l}<small>${s}</small></a>`).join('')).join('')}</div></aside><section class="fade">${mismatch}${content}</section></div></div>`}
+function ph(uc,title,sub){return `<div class="ph"><span class="uc">Use Case · ${uc}</span><h1>${title}</h1>${sub?`<p>${sub}</p>`:''}</div>`}
+
+/* ============ PAGES: PUBLIC / CUSTOMER ============ */
+function pHome(){
+ noSub();
+ const feat=S.deals.filter(listed).slice(0,3);
+ return `
+ <section class="hero"><div class="hero-glow"></div>
+  <div class="copy fade"><div class="caps" style="color:#86868b;margin-bottom:16px">Lifetime software deals</div><h1>Own your tools.</h1><p>Pay once. Use forever. From verified developers.</p>
+<div class="ctas"><a class="btn btn-hero-light" href="#/deals" onclick="if(S.role!=='customer')setRole('customer','#/deals')">Browse Software Deals</a><a class="btn btn-hero-dark" href="#/dev/profile" onclick="setRole('developer','#/dev/profile')">Sell on GrowBase</a></div></div>
+  <div class="hero-stage">${art(deal('quillnote'),true)}</div>
+
+ </section>
+ <section class="band"><div class="wrap reveal">
+  <div class="caps muted">This week</div><h2 style="margin-top:10px">Deals worth keeping.</h2><p class="lead">Every developer is verified by a dedicated Account Manager before a single licence is sold.</p>
+  <div class="grid" style="margin-top:56px;text-align:left">${feat.map(cardHTML).join('')}</div>
+  <div class="ctas"><a class="link-arrow" href="#/deals">See all deals ›</a></div>
+ </div></section>
+ <section class="band dark"><div class="wrap reveal">
+  <div class="caps" style="color:#86868b">For developers</div><h2 style="margin-top:10px">Launch to early adopters.<br>Keep 70%.</h2><p class="lead">Register, get verified by your Account Manager, and list your lifetime deal. A flat 30% commission — no hidden fees.</p>
+  <div class="ctas"><a class="link-arrow" href="javascript:setRole('developer','#/dev/onboarding')">Start onboarding ›</a><a class="link-arrow" href="#/guide">How verification works ›</a></div>
+  <div class="stats"><div><b class="num">1,240+</b><span>Verified developers</span></div><div><b class="num">30%</b><span>Flat commission</span></div><div><b class="num">20</b><span>Ratings before reviews go live</span></div></div>
+ </div></section>
+ <section class="band soft"><div class="wrap reveal two" style="text-align:left;align-items:center;gap:56px">
+  <div><div class="caps muted">Affiliate program</div><h2 style="margin-top:10px;font-size:44px">Share what you love.<br>Earn ${S.affRate}%.</h2><p class="lead" style="margin-left:0">A unique tracking link for every member. Paid monthly.</p><div class="ctas" style="justify-content:flex-start"><a class="btn btn-dark" href="javascript:setRole('affiliate','#/affiliate')">Join Affiliate Program</a></div></div>
+  <div>${art(deal('ledgerly'))}</div>
+ </div></section>
+ <section class="band"><div class="wrap reveal"><div class="caps muted">Careers</div><h2 style="margin-top:10px">Become an Account Manager.</h2><p class="lead">Guide developers from sign-up to their first thousand customers.</p><div class="ctas"><a class="link-arrow" href="javascript:setRole('applicant','#/careers')">Apply for AM Position ›</a></div></div></section>`}
+function cardHTML(d){const p=promoFor(d);const price=p?d.price*(1-p.pct/100):d.price;
+ return `<a class="card" href="#/deal/${d.id}">${art(d)}<div class="info"><span class="eyebrow">${d.dealType} · ${d.cat}</span><h3>${d.name}</h3><p class="tag">${d.tag}</p>${ratingLine(d)}<div class="price"><b class="num">${money(price)}</b><s class="num">${money(d.was)}</s>${p?`<span class="badge b-ok">${p.code} −${p.pct}%</span>`:''}</div></div></a>`}
+let filt='All',q='';
+function pDeals(){
+ subnav('Browse Software Deals','<a href="#/">GrowBase</a> › Deals',`<span class="muted" style="font-size:12px">${S.deals.filter(listed).length} live deals</span>`);
+ const cats=['All',...new Set(S.deals.filter(listed).map(d=>d.cat))];
+ const list=S.deals.filter(listed).filter(d=>(filt==='All'||d.cat===filt)&&(d.name+d.tag).toLowerCase().includes(q.toLowerCase()));
+ return `<div class="wrap fade" style="padding:44px 22px 100px">
+  ${ph('Browse Software Deals','Every deal. One price, forever.','Paused and suspended deals are hidden from search automatically.')}
+  <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:28px"><div class="chips">${cats.map(c=>`<button class="chip ${filt===c?'on':''}" onclick="filt='${c}';render()">${c}</button>`).join('')}</div><input class="search" placeholder="Search deals" value="${esc(q)}" oninput="q=this.value;clearTimeout(window._qs);window._qs=setTimeout(()=>{render();const s=document.querySelector('.search');s.focus();s.setSelectionRange(99,99)},250)"></div>
+  ${list.length?`<div class="grid">${list.map(cardHTML).join('')}</div>`:`<div class="empty"><b>No deals found</b>Try another category or search term.</div>`}
+ </div>`}
+function pDeal(id){
+ const d=deal(id);if(!d)return pDeals();
+ const p=promoFor(d);const price=p?d.price*(1-p.pct/100):d.price;const owned=S.purchases.find(x=>x.dealId===id);
+ subnav(d.name,`<a href="#/deals">Deals</a> › ${d.cat}`,listed(d)?`<a class="btn btn-blue btn-sm" href="#/checkout/${d.id}">Buy</a>`:'');
+ return `<div class="wrap"><div class="detail fade">
+  <div>${art(d,true)}
+   <div style="margin-top:44px"><div class="caps muted">Why ${d.name}</div><ul class="feat"><li>Lifetime access to all features in the ${d.dealType==='Lifetime'?'current plan':'early-access build'}, including future updates.</li><li>Licence key delivered instantly after payment.${uml('SoftwareDeal.dealType')}</li><li>Developer support guaranteed while you hold an open purchase.</li><li>60-day refund window — request it from My Purchases.</li></ul></div>
+   <div style="margin-top:40px"><div class="caps muted" style="margin-bottom:12px">Ratings ${uml('Rating.isPublished')}</div>${d.state==='Published'?`<div style="display:flex;align-items:baseline;gap:14px"><b style="font-size:56px;font-weight:700;letter-spacing:-.04em">${d.avg.toFixed(1)}</b><div><div class="stars" style="font-size:18px">${stars(d.avg)}</div><div class="muted">${d.ratingCount} verified-purchase ratings</div></div></div>`:notice('info','Ratings are hidden until this deal reaches '+S.threshold+' verified ratings',`<div class="muted" style="margin-top:6px">${d.ratingCount} of ${S.threshold} collected <span class="meter" style="width:120px;margin-left:6px"><i style="width:${Math.min(100,d.ratingCount/S.threshold*100)}%"></i></span></div>`)}</div>
+  </div>
+  <div class="buybox">
+   <span class="eyebrow">${d.dealType} deal ${uml('SoftwareDeal')}</span><h1 style="margin-top:6px">${d.name}</h1><p style="font-size:19px;color:var(--muted);margin-top:8px">${d.tag}</p>
+   <div style="margin-top:16px">${ratingLine(d)}</div>
+   <div class="specs"><div><b class="num">${money(price)}</b><span>Once ${uml('price')}</span></div><div><b class="num">${Math.round((1-price/d.was)*100)}%</b><span>Off retail</span></div><div><b>${d.dev.split(' ')[0]}</b><span>Verified dev</span></div></div>
+   ${p?`<div style="margin-bottom:14px">${notice('ok','Promotion '+p.code+' applied',`<span class="muted">−${p.pct}% until ${p.ends}. Was ${money(d.price)}.</span>`)}</div>`:''}
+   ${listed(d)?`<a class="btn btn-blue" style="width:100%;height:50px;font-size:16px" href="#/checkout/${d.id}">Buy for ${money(price)}</a>`:`<button class="btn btn-dark" disabled style="width:100%">Not available</button>`}
+   ${owned?`<p class="hint" style="margin-top:12px;text-align:center">You bought this on ${owned.date}. <a class="btn-ghost" href="#/purchases">Manage in My Purchases</a></p>`:`<p class="hint" style="margin-top:12px;text-align:center">Secure checkout via our payment gateway partner.</p>`}
+   <div class="glist" style="margin-top:26px"><div class="row"><span class="k">Developer</span><span class="v">${d.dev}</span></div><div class="row"><span class="k">Category</span><span class="v">${d.cat}</span></div><div class="row"><span class="k">Retail value</span><span class="v num">${money(d.was)}/yr</span></div></div>
+  </div></div></div>`}
+let co={step:1,promo:'',applied:null};
+function pCheckout(id){
+ const d=deal(id);if(!d)return pDeals();
+ const p=co.applied||promoFor(d);const price=p?d.price*(1-p.pct/100):d.price;
+ subnav('Checkout',`<a href="#/deal/${d.id}">${d.name}</a> › Purchase`,'');
+ const steps=['Review order','Process Payment','Licence delivered'];
+ const st=`<div class="stepper">${steps.map((s,i)=>`<div class="step ${i+1<co.step?'done':i+1===co.step?'cur':''}"><b>Step ${i+1}</b>${s}</div>`).join('')}</div>`;
+ let body='';
+ if(co.step===1)body=`<div class="two" style="align-items:start"><div class="panel white"><div style="display:flex;gap:16px;align-items:center"><div style="width:120px;flex:none">${art(d)}</div><div><b style="font-size:17px">${d.name}</b><div class="muted">${d.dealType} licence · 1 seat</div></div></div><hr class="sep" style="margin:20px 0"><div class="field"><label>Promotion code</label><div style="display:flex;gap:8px"><input class="inp" id="pc" placeholder="e.g. SPRING20" value="${esc(co.promo)}"><button class="btn btn-light" onclick="applyPromo('${d.id}')">Apply</button></div><span class="hint" id="pcmsg">${p?`${p.code} applied — ${p.pct}% off.`:'Codes are validated against active promotions.'}</span></div></div>
+  <div class="panel"><h3>Summary</h3><div class="glist" style="margin-top:14px"><div class="row"><span class="k">Deal price</span><span class="v num">${money(d.price)}</span></div>${p?`<div class="row"><span class="k">${p.code}</span><span class="v num" style="color:var(--ok)">−${money(d.price-price)}</span></div>`:''}<div class="row"><span class="k"><b>Total (AUD)</b></span><span class="v num"><b style="color:var(--ink)">${money(price)}</b></span></div></div><button class="btn btn-blue" style="width:100%;margin-top:18px;height:48px" onclick="co.step=2;render()">Continue to payment</button><p class="hint" style="margin-top:10px">Signed in as ${ROLES.customer.name} — Log In is a precondition of purchase.</p></div></div>`;
+ if(co.step===2)body=`<div class="two" style="align-items:start"><div class="panel white"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Payment details</h3><span class="badge">External · Payment Gateway</span></div><p class="sub">Card details are sent directly to the gateway. GrowBase never stores them.</p><div class="stack" style="margin-top:18px"><div class="field"><label>Card number</label><input class="inp" placeholder="4242 4242 4242 4242 (demo)"></div><div class="form-grid"><div class="field"><label>Expiry</label><input class="inp" placeholder="MM / YY"></div><div class="field"><label>CVC</label><input class="inp" placeholder="123"></div></div><div class="field"><label>Name on card</label><input class="inp" value="Ethan Brooks"></div></div></div>
+  <div class="panel"><span class="uc">&lt;&lt;include&gt;&gt; Process Payment</span><h3 style="margin-top:8px">Pay ${money(price)}</h3><p class="sub">Purchase Software Deal always includes Process Payment.</p><button class="btn btn-blue" id="paybtn" style="width:100%;margin-top:18px;height:48px" onclick="pay('${d.id}',${price})">Pay ${money(price)}</button><button class="btn-ghost" style="margin-top:12px" onclick="co.step=1;render()">‹ Back to order</button></div></div>`;
+ if(co.step===3){const last=S.purchases[0];body=`<div class="panel" style="text-align:center;padding:56px 28px"><div style="width:56px;height:56px;margin:0 auto 16px">${I.ok}</div><h1 style="font-size:36px;font-weight:700;letter-spacing:-.03em">It’s yours. Forever.</h1><p class="muted" style="margin-top:6px">Order ${last.id} · ${money(last.amount)} paid via payment gateway</p><div class="glist" style="max-width:420px;margin:26px auto;text-align:left"><div class="row"><span class="k">Licence key</span><span class="v mono">INKW-${last.id.slice(3)}-7QX2-LF94</span></div><div class="row"><span class="k">Deal</span><span class="v">${d.name}</span></div></div><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn btn-dark" href="#/purchases">Go to My Purchases</a><a class="btn btn-light" href="#/deals">Keep browsing</a></div></div>`}
+ return `<div class="wrap fade" style="padding:44px 22px 100px">${ph('Purchase Software Deal','Checkout.','')}${st}${body}</div>`}
+function applyPromo(id){const c=$('#pc').value.trim().toUpperCase();co.promo=c;const p=S.promotions.find(x=>x.code===c&&x.deal===id);
+ if(p&&p.active){co.applied=p;toast(p.code+' applied');render()}else{co.applied=null;$('#pcmsg').innerHTML=`<span class="err-t">${p?'This promotion has ended.':'Code not valid for this deal.'}</span>`;$('#pc').classList.add('err')}}
+function pay(id,price){const b=$('#paybtn');b.innerHTML='<span class="spin" style="border-top-color:#fff"></span>&nbsp; Contacting payment gateway…';b.disabled=true;
+ setTimeout(()=>{const d=deal(id);const oid='GB-'+(10600+Math.floor(Math.random()*300));S.purchases.unshift({id:oid,dealId:id,date:'25 Oct 2026',amount:Math.round(price*100)/100,rated:false,refund:null});d.openPurchases++;
+  notify('customer','Payment received',`${d.name} — order ${oid}. Licence key issued.`);co.step=3;co.applied=null;co.promo='';save();render()},1400)}
+function pPurchases(){
+ subnav('My Purchases','<a href="#/">GrowBase</a> › Account','');
+ const rows=S.purchases.map(p=>{const d=deal(p.dealId);const ref=p.refund;
+  return `<tr><td><div style="display:flex;gap:12px;align-items:center"><div style="width:64px">${art(d)}</div><div><b>${d.name}</b><div class="muted mono">${p.id}</div></div></div></td><td class="num">${p.date}</td><td class="num">${money(p.amount)}</td><td class="hm">${ref?badge(ref.status==='Pending'?'Pending':ref.status)+`<div class="hint">${ref.type}</div>`:p.rated?'<span class="badge b-ok">Rated</span>':'<span class="badge">Active</span>'}</td><td style="text-align:right;white-space:nowrap">${p.rated?'':`<a class="btn btn-light btn-sm" href="#/rate/${p.id}">Rate</a> `}${ref?'':`<a class="btn btn-sm btn-ghost" href="#/refund/${p.id}">Refund / Dispute</a>`}</td></tr>`}).join('');
+ return portal('customer','#/purchases',`${ph('Rate Purchased Software · Request Refund / Dispute','My Purchases.','Only verified purchases can be rated or refunded.')}<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Deal</th><th>Date</th><th>Paid</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan=5 class="empty">No purchases yet.</td></tr>'}</tbody></table></div>`)}
+let rs=0;
+function pRate(pid){
+ const p=S.purchases.find(x=>x.id===pid);if(!p)return pPurchases();const d=deal(p.dealId);
+ subnav('Rate '+d.name,'<a href="#/purchases">My Purchases</a> › Rate','');
+ if(p.rated)return portal('customer','#/purchases',`${ph('Rate Purchased Software','Thanks for rating.','')}${notice('ok','Your rating has been recorded','')}`);
+ return portal('customer','#/purchases',`${ph('Rate Purchased Software','How is '+d.name+'?','Your rating is linked to order '+p.id+', so it counts as a verified-purchase rating.')}
+ <div class="panel white stack" style="max-width:620px"><div class="field"><label>Your rating ${uml('Rating.stars : Integer')}</label><div class="star-in">${[1,2,3,4,5].map(i=>`<button class="${i<=rs?'on':''}" onclick="rs=${i};render()">★</button>`).join('')}</div><span class="err-t" id="rs-err"></span></div>
+ <div class="field"><label>Review ${uml('Rating.reviewText : String')}<span class="muted">Optional</span></label><textarea class="inp" id="rv" placeholder="What did you use it for? What stood out?"></textarea></div>
+ ${d.state!=='Published'?notice('info','Ratings for this deal are still hidden',`<span class="muted">${d.ratingCount}/${S.threshold} collected. Yours will count toward the threshold.</span>`):''}
+ <div><button class="btn btn-dark" onclick="submitRating('${pid}')">Submit rating</button></div></div>`)}
+function submitRating(pid){if(!rs){$('#rs-err').textContent='Choose 1–5 stars.';return}
+ const p=S.purchases.find(x=>x.id===pid);const d=deal(p.dealId);p.rated=true;d.avg=(d.avg*d.ratingCount+rs)/(d.ratingCount+1);d.ratingCount++;
+ const before=d.state;autoTransitions(d);rs=0;save();
+ toast(before!==d.state?`${d.name} reached ${S.threshold} ratings — ratings now public`:'Rating submitted');go('#/purchases')}
+function pRefund(pid){
+ const p=S.purchases.find(x=>x.id===pid);if(!p)return pPurchases();const d=deal(p.dealId);
+ subnav('Refund / Dispute','<a href="#/purchases">My Purchases</a> › Request','');
+ return portal('customer','#/purchases',`${ph('Request Refund / Dispute','Something not right?','Your request goes to the developer’s Account Manager. If a refund is approved, it is processed through the payment gateway.')}
+ <div class="panel white stack" style="max-width:640px"><div class="glist"><div class="row"><span class="k">Order</span><span class="v mono">${p.id}</span></div><div class="row"><span class="k">Deal</span><span class="v">${d.name}</span></div><div class="row"><span class="k">Paid</span><span class="v num">${money(p.amount)}</span></div></div>
+ <div class="field"><label>Request type</label><select class="inp" id="rt"><option>Refund</option><option>Dispute</option></select></div>
+ <div class="field"><label>Reason ${uml('RefundRequest.reason : String')}</label><textarea class="inp" id="rr" placeholder="Describe the issue"></textarea><span class="err-t" id="rr-err"></span></div>
+ <div style="display:flex;gap:12px"><button class="btn btn-dark" onclick="submitRefund('${pid}')">Submit request</button><a class="btn btn-light" href="#/purchases">Cancel</a></div></div>`)}
+function submitRefund(pid){const r=$('#rr').value.trim();if(r.length<8){$('#rr').classList.add('err');$('#rr-err').textContent='Please give a short reason (at least 8 characters).';return}
+ const p=S.purchases.find(x=>x.id===pid);const d=deal(p.dealId);const req={id:'RF-'+(2040+S.refunds.length),purchase:pid,dealId:d.id,customer:'Ethan Brooks',type:$('#rt').value,reason:r,status:'Pending',requestedAt:'25 Oct 2026'};
+ p.refund=req;S.refunds.unshift(req);notify('am','New '+req.type.toLowerCase()+' request '+req.id,`${d.name} — ${r.slice(0,60)}`);save();toast('Request '+req.id+' submitted to Account Manager');go('#/purchases')}
+
+/* ============ AFFILIATE / CAREERS ============ */
+function pAffiliate(){
+ const a=S.affiliate;const role=S.role==='affiliate'?'affiliate':'customer';
+ subnav('Affiliate Program','<a href="#/">GrowBase</a> › Affiliates','');
+ if(a.joined)return portal(role==='customer'?'affiliate':role,'#/affiliate',`${ph('Join Affiliate Program','You’re in.','')}${notice('ok','Active affiliate member',`<span class="muted">Tracking code <b class="mono" style="display:inline">${a.trackingCode}</b></span>`)}<div style="margin-top:18px"><a class="btn btn-dark" href="#/affiliate/track">Track Referrals & Commission</a></div>`);
+ return portal('affiliate','#/affiliate',`${ph('Join Affiliate Program','Share deals. Earn '+S.affRate+'%.','Get a unique tracking link. Earn commission on every qualifying sale you refer.')}
+ <div class="three" style="margin-bottom:22px">${[['01','Join','Accept the terms and add a payout email.'],['02','Share','Post your unique link anywhere.'],['03','Earn',S.affRate+'% of every referred sale, paid monthly.']].map(([n,t,s])=>`<div class="panel"><div class="caps muted">${n}</div><h3 style="margin-top:6px">${t}</h3><p class="sub">${s}</p></div>`).join('')}</div>
+ <div class="panel white stack" style="max-width:620px"><div class="field"><label>Payout email</label><input class="inp" id="ape" value="ethan.brooks@mail.com"></div><div class="field"><label>Where will you share?</label><select class="inp"><option>Blog / newsletter</option><option>YouTube</option><option>Social media</option></select></div>
+ <label class="check"><input type="checkbox" id="atc"> <span>I agree to the Affiliate Terms, including that self-referrals (buying through my own link) do not earn commission.</span></label><span class="err-t" id="atc-err"></span>
+ <div><button class="btn btn-dark" onclick="joinAff()">Join program</button></div></div>`)}
+function joinAff(){if(!$('#atc').checked){$('#atc-err').textContent='Please accept the Affiliate Terms.';return}
+ const a=S.affiliate;a.joined=true;a.payout=$('#ape').value;a.trackingCode='GB-AF-'+Math.random().toString(36).slice(2,6).toUpperCase();a.clickCount=0;a.referrals=[];
+ S.affiliates.unshift({name:'Ethan Brooks',code:a.trackingCode,clicks:0,sales:0,earned:0,status:'Active'});notify('affiliate','Welcome to the Affiliate Program','Your tracking link is ready.');save();S.role='affiliate';save();toast('Joined — tracking link generated');go('#/affiliate/track')}
+function pTrack(){
+ const a=S.affiliate;subnav('Track Referrals & Commission','<a href="#/affiliate">Affiliates</a> › Dashboard','');
+ if(!a.joined)return portal('affiliate','#/affiliate/track',`${ph('Track Referrals & Commission','Nothing to track yet.','')}${notice('info','Join the Affiliate Program first','<a class="btn-ghost" href="#/affiliate">Join Affiliate Program →</a>')}`);
+ const earned=a.referrals.reduce((s,r)=>s+(r.blocked?0:r.comm),0);
+ return portal('affiliate','#/affiliate/track',`${ph('Track Referrals & Commission','Your referrals.','')}
+ <div class="panel white" style="margin-bottom:18px"><div class="field"><label>Your tracking link ${uml('Affiliate.trackingCode')}</label><div style="display:flex;gap:8px"><input class="inp mono" readonly value="https://growbase.app/r/${a.trackingCode}"><button class="btn btn-light" onclick="toast('Link copied')">Copy</button></div></div></div>
+ <div class="three" style="margin-bottom:18px"><div class="panel"><div class="caps muted">Clicks ${uml('clickCount')}</div><b style="font-size:36px;font-weight:700" class="num">${a.clickCount}</b></div><div class="panel"><div class="caps muted">Referred sales</div><b style="font-size:36px;font-weight:700" class="num">${a.referrals.filter(r=>!r.blocked).length}</b></div><div class="panel"><div class="caps muted">Commission</div><b style="font-size:36px;font-weight:700" class="num">${money(earned)}</b></div></div>
+ <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><button class="btn btn-light btn-sm" onclick="simClick()">Simulate 25 clicks</button><button class="btn btn-light btn-sm" onclick="simSale(false)">Simulate referred sale</button><button class="btn btn-light btn-sm" onclick="simSale(true)">Simulate self-referral</button></div>
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Deal</th><th>Sale</th><th>Commission</th></tr></thead><tbody>${a.referrals.length?a.referrals.map(r=>`<tr><td>${r.date}</td><td>${r.deal}</td><td class="num">${money(r.sale)}</td><td>${r.blocked?'<span class="badge b-bad">Blocked · self-referral</span>':`<span class="num">${money(r.comm)}</span>`}</td></tr>`).join(''):'<tr><td colspan=4 class="empty">No referred sales yet.</td></tr>'}</tbody></table></div>`)}
+function simClick(){S.affiliate.clickCount+=25;save();render()}
+function simSale(self){const d=S.deals.filter(listed)[Math.floor(Math.random()*4)];const blocked=self&&S.blockSelf;S.affiliate.referrals.unshift({date:'25 Oct 2026',deal:d.name,sale:d.price,comm:d.price*S.affRate/100,blocked});save();toast(blocked?'Self-referral detected — no commission':'Referred sale attributed');render()}
+function pCareers(){
+ subnav('Careers','<a href="#/">GrowBase</a> › Careers','');
+ const a=S.application;
+ return portal('applicant','#/careers',`${ph('Apply for AM Position','Account Manager.','Melbourne · Hybrid · Full-time. Own a portfolio of up to 15 developers — verify them, guide onboarding, and resolve customer disputes.')}
+ ${a?`${notice('ok','Application submitted',`<span class="muted">${a.name} · ${a.applied} · Status: </span>${badge(a.stage)}`)}<p class="hint" style="margin-top:12px">GrowBase Admin reviews applications in Manage AM Recruitment.</p>`:`
+ <div class="panel white stack" style="max-width:680px"><div class="form-grid"><div class="field"><label>Full name</label><input class="inp" id="an" value="Jordan Lee"></div><div class="field"><label>Email</label><input class="inp" id="ae" value="jordan.lee@outlook.com"></div>
+ <div class="field full"><label>Relevant experience</label><input class="inp" id="ax" value="3 yrs B2B SaaS account management"></div><div class="field full"><label>Why GrowBase?</label><textarea class="inp" id="aw" placeholder="Tell us briefly"></textarea></div><div class="field full"><label>Résumé</label><input class="inp" type="file" style="padding-top:11px"></div></div>
+ <div><button class="btn btn-dark" onclick="applyAM()">Submit application</button></div></div>`}`)}
+function applyAM(){const a={name:$('#an').value,exp:$('#ax').value,stage:'Applied',applied:'25 Oct 2026'};S.application=a;S.applicants.unshift(a);notify('admin','New AM application',a.name+' — '+a.exp);notify('applicant','Application received','We’ll be in touch within 5 business days.');save();toast('Application submitted');render()}
+
+/* ============ DEVELOPER ============ */
+function pDevProfile(){
+ const v=S.dev;subnav('Developer Profile','<a href="#/">GrowBase</a> › Developers','');
+ return portal('developer','#/dev/profile',`${ph('Register / Manage Developer Profile','Your account.','Registered '+v.registeredAt+'. Update your details at any time — changes are saved to your developer record.')}
+ <div class="stack" style="max-width:720px">
+ <div class="panel white"><h3>Account</h3><p class="sub">Used to sign in and receive onboarding notifications.</p>
+  <div class="form-grid" style="margin-top:18px"><div class="field"><label>First name</label><input class="inp" id="fn" value="${esc(v.firstName)}"></div><div class="field"><label>Last name</label><input class="inp" id="ln" value="${esc(v.lastName)}"></div>
+  <div class="field"><label>Email ${uml('User.email : String')}</label><input class="inp" id="em" value="${esc(v.email)}"><span class="err-t" id="em-err"></span></div><div class="field"><label>Password ${uml('User.passwordHash')}</label><input class="inp" type="password" value="password123"></div></div></div>
+ <div class="panel white"><h3>Company</h3><p class="sub">Shown on your deals once you are verified.</p>
+  <div class="form-grid" style="margin-top:18px"><div class="field"><label>Company</label><input class="inp" id="co" value="${esc(v.company)}"></div><div class="field"><label>Phone</label><input class="inp" id="pn" value="${esc(v.phone)}"></div><div class="field"><label>Country</label><select class="inp" id="ct"><option>Australia</option><option>Vietnam</option><option>Bangladesh</option><option>United States</option></select></div>
+  <div class="field"><label>Verification status ${uml('Developer.verificationStatus')}</label><div style="height:46px;display:flex;align-items:center">${badge(v.verificationStatus)}</div></div></div></div>
+ <div class="glist"><div class="row"><span class="k">Email notifications</span><span class="switch on" onclick="this.classList.toggle('on')"></span></div><div class="row"><span class="k">Product updates from GrowBase</span><span class="switch" onclick="this.classList.toggle('on')"></span></div></div>
+ <div style="display:flex;gap:12px;flex-wrap:wrap"><button class="btn btn-dark" onclick="saveProfile()">Save changes</button><a class="btn btn-light" href="#/dev/onboarding">${v.verificationStatus==='Verified'?'View onboarding':'Continue to onboarding'}</a></div></div>`)}
+function saveProfile(){const em=$('#em').value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){$('#em').classList.add('err');$('#em-err').textContent='Enter a valid email address.';return}
+ Object.assign(S.dev,{firstName:$('#fn').value,lastName:$('#ln').value,email:em,company:$('#co').value,phone:$('#pn').value,country:$('#ct').value});save();toast('Profile updated');render()}
+const OSTEPS=['Complete Developer Profile','Submit Credibility Evidence','Validate Submission','Assign Account Manager','Review Developer','Notify Outcome'];
+function stageIdx(){return {profile:0,evidence:1,validating:2,missing:2,assigning:3,review:4,moreEvidence:4,approved:5,rejected:5}[S.dev.stage]}
+function pOnboard(){
+ const v=S.dev;const si=stageIdx();
+ subnav('Onboard Developer','<a href="#/dev/profile">Developer</a> › Onboarding',badge(v.verificationStatus));
+ const st=`<div class="stepper">${OSTEPS.map((s,i)=>`<div class="step ${i<si||(si===5&&i===5&&v.stage==='approved')?'done':i===si?'cur':''}"><b>${i+1} · &lt;&lt;include&gt;&gt;</b>${s}</div>`).join('')}</div>`;
+ let b='';
+ if(v.stage==='profile'||v.stage==='evidence'){const ev=v.stage==='evidence';
+  b=!ev?`<div class="panel white stack" style="max-width:720px"><div><h3>Tell us about your software</h3><p class="sub">Your Account Manager uses this to check product fit with our customers.</p></div>
+   <div class="form-grid"><div class="field"><label>Software name</label><input class="inp ${v.missing.includes('software')?'err':''}" id="sw" value="${esc(v.software)}"></div><div class="field"><label>Category</label><select class="inp" id="cat">${['Writing & Docs','Productivity','Marketing','Developer Tools','Finance','Design','Media'].map(c=>`<option ${c===v.category?'selected':''}>${c}</option>`).join('')}</select></div>
+   <div class="field full"><label>Target audience <span class="muted">Required</span></label><input class="inp ${v.missing.includes('audience')?'err':''}" id="aud" value="${esc(v.audience)}" placeholder="e.g. Freelance writers and small content teams">${v.missing.includes('audience')?'<span class="err-t">Missing — requested by system validation.</span>':''}</div>
+   <div class="field full"><label>Description</label><textarea class="inp ${v.missing.includes('description')?'err':''}" id="dsc">${esc(v.description)}</textarea></div></div>
+   <div style="display:flex;gap:12px"><button class="btn btn-dark" onclick="obNext()">Continue</button></div></div>`
+  :`<div class="panel white stack" style="max-width:720px"><div><h3>Credibility evidence ${uml('Developer.trustProofLinks : String[]')}</h3><p class="sub">Official website plus at least one social channel. We check every link is reachable.</p></div>
+   <div class="form-grid"><div class="field full"><label>Official website <span class="muted">Required</span></label><input class="inp ${v.missing.includes('website')?'err':''}" id="ws" value="${esc(v.website)}"></div>
+   <div class="field"><label>Facebook page</label><input class="inp" id="fb" value="${esc(v.facebook)}"></div><div class="field"><label>X profile</label><input class="inp" id="xx" value="${esc(v.x)}"></div><div class="field full"><label>YouTube channel</label><input class="inp ${v.missing.includes('social')?'err':''}" id="yt" value="${esc(v.youtube)}" placeholder="youtube.com/@yourchannel"></div></div>
+   <div style="display:flex;gap:12px"><button class="btn btn-light" onclick="S.dev.stage='profile';save();render()">‹ Back</button><button class="btn btn-dark" onclick="obSubmit()">${v.attempts?'Resubmit for validation':'Submit for validation'}</button></div></div>`;
+  if(v.missing.length)b=`<div style="margin-bottom:18px">${notice('warn','Request Missing Information · &lt;&lt;extend&gt;&gt;',`<span class="muted">Your submission was incomplete. Please update: ${v.missing.map(m=>({audience:'Target audience',software:'Software name',description:'Description',website:'Official website',social:'At least one social channel'}[m])).join(', ')}.</span>`)}</div>`+b}
+ if(v.stage==='validating'||v.stage==='missing'){const done=v.stage==='missing';
+  b=`<div class="panel stack"><div><h3>GrowBase is validating your submission</h3><p class="sub">Two checks run in parallel.</p></div><div><div class="par-label">fork</div><div class="par">
+   <div class="chk"><h4>Required profile fields <span id="c1">${done?(v.missing.some(m=>['audience','software','description'].includes(m))?'<span class="no">Incomplete</span>':'<span class="ok">Complete</span>'):'<span class="spin"></span>'}</span></h4><ul><li>Software name<span>${v.software?'✓':'—'}</span></li><li>Target audience<span>${v.audience?'✓':'—'}</span></li><li>Description<span>${v.description?'✓':'—'}</span></li></ul></div>
+   <div class="chk"><h4>Evidence-link accessibility <span id="c2">${done?(v.missing.some(m=>['website','social'].includes(m))?'<span class="no">Failed</span>':'<span class="ok">Reachable</span>'):'<span class="spin"></span>'}</span></h4><ul><li>Website<span>${v.website?'200 OK':'—'}</span></li><li>Facebook<span>${v.facebook?'200 OK':'—'}</span></li><li>X<span>${v.x?'200 OK':'—'}</span></li><li>YouTube<span>${v.youtube?'200 OK':'—'}</span></li></ul></div>
+  </div><div class="par-label">join</div></div>
+  ${done?`${notice('warn','[incomplete] — Request Missing Information','<span class="muted">We’ve sent you a request with what’s missing.</span>')}<div><button class="btn btn-dark" onclick="S.dev.stage=S.dev.missing.some(m=>['website','social'].includes(m))&&!S.dev.missing.some(m=>['audience','software','description'].includes(m))?'evidence':'profile';save();render()">Update & resubmit</button></div>`:''}</div>`}
+ if(v.stage==='assigning')b=`<div class="panel stack"><h3>[complete] — Assigning an available Account Manager</h3><p class="sub"><span class="spin"></span>&nbsp; Checking capacity…</p></div>`;
+ if(v.stage==='review'||v.stage==='moreEvidence'){
+  b=`<div class="stack"><div class="panel white"><div style="display:flex;gap:16px;align-items:center"><div class="av" style="width:48px;height:48px;border-radius:50%;background:#1d1d1f;color:#fff;display:grid;place-items:center;font-weight:600">PN</div><div style="flex:1"><div class="caps muted">Your Account Manager</div><b style="font-size:19px">Priya Nair</b><div class="muted" style="font-size:13px">Assigned 25 Oct 2026 · You and Priya were both notified</div></div>${badge(v.verificationStatus)}</div></div>
+  ${v.stage==='moreEvidence'?`<div class="panel white stack">${notice('warn','Request Additional Evidence · &lt;&lt;extend&gt;&gt;',`<span class="muted">Priya: “${esc(v.amRequest)}”</span>`)}<div class="field"><label>Additional evidence</label><textarea class="inp" id="xe" placeholder="Links, ABN, screenshots of active users…">ABN 51 824 753 556 · App Store listing: apps.apple.com/app/inkwell · 1,900 active beta users (Mixpanel export attached)</textarea></div><div><button class="btn btn-dark" onclick="provideEvidence()">Send to Account Manager</button></div></div>`
+  :`${notice('info','Review in progress','<span class="muted">Priya is reviewing your software fit and credibility evidence. You’ll be notified of the outcome.</span>')}<div class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><div><b>Marker shortcut</b><div class="muted" style="font-size:13px">Continue the flow from the Account Manager’s side.</div></div><button class="btn btn-dark" onclick="setRole('am','#/am/review')">Open as Account Manager →</button></div>`}</div>`}
+ if(v.stage==='approved')b=`<div class="panel" style="text-align:center;padding:56px 28px"><div style="width:56px;height:56px;margin:0 auto 14px">${I.ok}</div><div class="caps muted">Approve Developer · Notify Outcome</div><h1 style="font-size:40px;font-weight:700;letter-spacing:-.03em;margin-top:8px">You’re verified.</h1><p class="muted" style="margin-top:6px">Your developer profile is active. Priya Nair is your Account Manager.</p><div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn btn-dark" href="#/dev/deals">Create / Manage Software Deal</a><a class="btn btn-light" href="#/dev/profile">View profile</a></div></div>`;
+ if(v.stage==='rejected')b=`<div class="panel stack">${notice('bad','Reject Developer · Notify Outcome','<span class="muted">Reason from your Account Manager: “'+esc(v.rejectReason)+'”</span>')}<p class="muted" style="font-size:14px">The decision has been recorded. You can contact support or reapply after 30 days.</p><div><button class="btn btn-light" onclick="restartOnb()">Start a new application (demo)</button></div></div>`;
+ return portal('developer','#/dev/onboarding',`${ph('Onboard Developer','Get verified.','Six steps from profile to approval. Your Account Manager reviews every submission personally.')}${st}${b}`)}
+function obNext(){Object.assign(S.dev,{software:$('#sw').value.trim(),category:$('#cat').value,audience:$('#aud').value.trim(),description:$('#dsc').value.trim()});S.dev.stage='evidence';save();render()}
+function obSubmit(){Object.assign(S.dev,{website:$('#ws').value.trim(),facebook:$('#fb').value.trim(),x:$('#xx').value.trim(),youtube:$('#yt').value.trim()});
+ const v=S.dev;v.attempts++;const m=[];if(!v.software)m.push('software');if(!v.audience)m.push('audience');if(!v.description)m.push('description');if(!v.website)m.push('website');if(!v.facebook&&!v.x&&!v.youtube)m.push('social');
+ v.missing=m;v.stage='validating';v.verificationStatus='Under Review';save();render();
+ setTimeout(()=>{if(m.length){v.stage='missing';v.verificationStatus='Incomplete';notify('developer','Request Missing Information','Your onboarding submission is incomplete.');save();render()}
+  else{v.stage='assigning';save();render();setTimeout(()=>{v.stage='review';v.am='Priya Nair';v.verificationStatus='Under Review';S.review={fit:[false,false,false],ev:{website:null,facebook:null,x:null,youtube:null}};
+   notify('developer','Account Manager assigned','Priya Nair will review your submission.');notify('am','New onboarding case: Lumen Labs','Inkwell — assigned to you.');save();render()},1300)}},1800)}
+function provideEvidence(){S.dev.extra=$('#xe').value;S.dev.stage='review';S.dev.verificationStatus='Under Review';S.review={fit:[false,false,false],ev:{website:null,facebook:null,x:null,youtube:null}};notify('am','Additional evidence received','Lumen Labs responded to your request.');save();toast('Sent to Priya Nair — review restarts');render()}
+function restartOnb(){Object.assign(S.dev,{stage:'profile',verificationStatus:'Not Started',missing:[],attempts:0,am:null});save();render()}
+function pDevDeals(){
+ subnav('Software Deals','<a href="#/dev/profile">Developer</a> › Deals',S.dev.verificationStatus==='Verified'?`<button class="btn btn-dark btn-sm" onclick="newDeal()">New deal</button>`:'');
+ const mine=S.deals.filter(d=>d.own);
+ const gate=S.dev.verificationStatus!=='Verified'?`<div style="margin-bottom:20px">${notice('warn','Available to Verified Developers',`<span class="muted">Verified Developer generalises Developer: only verified accounts can publish deals. Your status: </span>${badge(S.dev.verificationStatus)} <a class="btn-ghost" href="#/dev/onboarding">Go to onboarding →</a>`)}</div>`:'';
+ return portal('developer','#/dev/deals',`${ph('Create / Manage Software Deal','Your deals.','Each deal moves through Draft → Listed → Paused / Suspended → Archived.')}${gate}
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Deal</th><th>State ${uml('SoftwareDeal state')}</th><th>Price</th><th class="hm">Ratings</th><th></th></tr></thead><tbody>${mine.map(d=>`<tr><td><div style="display:flex;gap:12px;align-items:center"><div style="width:64px">${art(d)}</div><div><b>${d.name}</b><div class="muted" style="font-size:12px">${d.dealType}</div></div></div></td><td>${badge(d.state)}</td><td class="num">${money(d.price)}</td><td class="hm num">${d.ratingCount}/${S.threshold}</td><td style="text-align:right"><a class="btn btn-light btn-sm" href="#/dev/deal/${d.id}">Manage</a></td></tr>`).join('')}</tbody></table></div>`)}
+function newDeal(){const n=S.deals.filter(d=>d.own).length;const id='inkwell'+n;S.deals.push({id,name:'Inkwell Teams',dev:'Lumen Labs',tag:'Shared workspaces for editorial teams.',cat:'Writing & Docs',price:149,was:960,dealType:'Lifetime',state:'Draft',ratingCount:0,avg:0,openPurchases:0,hue:'#424245',bg:'linear-gradient(160deg,#ededf0,#f8f8fa)',own:true,pausedDays:0,fraudReported:false,investigationCleared:false,fraudConfirmed:false,cleanupComplete:false,log:[{from:'●',to:'Draft',trigger:'(initial)',guard:'',effect:'',type:'Initial'}]});save();go('#/dev/deal/'+id)}
+
+/* ============ STATE MACHINE (Sprint 4) ============ */
+function logT(d,from,to,trigger,guard,effect,type){d.log.unshift({from,to,trigger,guard,effect,type})}
+function autoTransitions(d){
+ if(!d.log)d.log=[];
+ if(d.state==='AwaitingRatings'&&d.ratingCount>=S.threshold){logT(d,'AwaitingRatings','Published','(none)','[ratingCount >= 20]','entry / makeVisibleToCustomers()','Automatic');d.state='Published'}
+ if(d.state==='Paused'&&d.pausedDays>=90&&d.openPurchases===0){logT(d,'Paused','Archived','(none)','[pausedDays >= 90 && openPurchases == 0]','entry / purgeRecords()','Automatic');d.state='Archived'}
+ if(d.state==='Archived'&&d.cleanupComplete){logT(d,'Archived','●','(none)','[cleanupComplete == true]','(none)','Automatic');d.state='Ended'}
+}
+function enterListed(d,from,trig,guard,effect){logT(d,from,'Listed ▸ AwaitingRatings',trig,guard,effect,'Triggered');d.state='AwaitingRatings';autoTransitions(d)}
+const TR={
+ editDetails:{from:['Draft'],guard:d=>true,g:'',run:d=>{logT(d,'Draft','Draft','editDetails()','','updateDraftContent()','Self-transition')}},
+ publish:{from:['Draft'],guard:d=>S.dev.verificationStatus==='Verified',g:'[developer.verificationStatus == "Verified"]',run:d=>{enterListed(d,'Draft','publish()','[developer.verificationStatus == "Verified"]','notifyCustomersOfNewDeal()')}},
+ discard:{from:['Draft'],guard:d=>true,g:'',run:d=>{logT(d,'Draft','Archived','discard()','','deleteDraft()','Triggered');d.state='Archived'}},
+ editListingDetails:{from:['AwaitingRatings'],guard:d=>true,g:'',run:d=>{logT(d,'AwaitingRatings','AwaitingRatings','editListingDetails()','','updateListingInfo()','Self-transition')}},
+ applyPromotion:{from:['Published'],guard:d=>true,g:'[promo.isActive == true]',run:d=>{const p={code:'INK'+(10+S.promotions.length),deal:d.id,pct:15,active:true,ends:'30 Nov 2026'};S.promotions.unshift(p);logT(d,'Published','Published','applyPromotion('+p.code+')','[promo.isActive == true]','recalculateCommission()','Self-transition')}},
+ pause:{from:['AwaitingRatings','Published'],guard:d=>true,g:'[developer.requestsPause == true]',run:d=>{logT(d,'Listed','Paused','pause()','[developer.requestsPause == true]','notifyCustomersOfPause(); entry / hideFromSearch()','Triggered');d.state='Paused';d.pausedDays=0}},
+ resume:{from:['Paused'],guard:d=>S.dev.verificationStatus==='Verified',g:'[developer.verificationStatus == "Verified"]',run:d=>{enterListed(d,'Paused','resume()','[developer.verificationStatus == "Verified"]','reactivateListing()')}},
+ remove:{from:['AwaitingRatings','Published','Paused'],guard:d=>d.openPurchases===0,g:'[openPurchases == 0]',run:d=>{logT(d,listed(d)?'Listed':d.state,'Archived','remove()','[openPurchases == 0]','archiveDeal()','Triggered');d.state='Archived'}}
+};
+function fire(id,t){const d=deal(id);const x=TR[t];if(!x.from.includes(d.state)||!x.guard(d)){toast('Guard not satisfied: '+x.g);return}
+ if(t==='editDetails'||t==='editListingDetails'){d.price=Number($('#dp').value)||d.price;d.tag=$('#dt').value;d.dealType=$('#dty').value}
+ x.run(d);autoTransitions(d);save();toast(t+'() → '+d.state);render()}
+function sim(id,k){const d=deal(id);
+ if(k==='r5'){d.ratingCount=Math.min(d.ratingCount+5,999);d.avg=d.avg?d.avg:4.6}
+ if(k==='p90')d.pausedDays=90;
+ if(k==='close')d.openPurchases=0;
+ if(k==='buy')d.openPurchases+=3;
+ if(k==='clean')d.cleanupComplete=true;
+ autoTransitions(d);save();render()}
+function smDiagram(d){const c=s=>d.state===s?'cur':'';
+ return `<div class="sm"><div class="col"><div class="pseudo ${d.log.length===1&&d.state==='Draft'?'cur':''}"><i></i> Initial</div><div class="st ${c('Draft')}"><b>Draft</b>editDetails() ↺</div><div class="st ${c('Paused')}"><b>Paused</b>entry / hideFromSearch()</div></div>
+ <div class="comp ${listed(d)?'cur':''}"><span>Listed</span><div class="st ${c('AwaitingRatings')}"><b>AwaitingRatings</b>do / collectRatings()</div><div class="st ${c('Published')}"><b>Published</b>entry / makeVisible…()</div><div style="grid-column:1/-1;font-size:11px;color:var(--faint);text-align:center">[ratingCount ≥ ${S.threshold}] automatic →</div></div>
+ <div class="col"><div class="st ${c('Suspended')}"><b>Suspended</b>entry / notifyDeveloper()</div><div class="st ${c('Archived')}"><b>Archived</b>entry / purgeRecords()</div><div class="pseudo ${d.state==='Ended'?'cur':''}"><i class="fin"></i> Final</div></div></div>`}
+function pDevDeal(id){
+ const d=deal(id);if(!d||!d.own)return pDevDeals();
+ subnav(d.name,'<a href="#/dev/deals">Deals</a> › Manage',badge(d.state));
+ const avail=Object.entries(TR).filter(([k,x])=>x.from.includes(d.state));
+ const editable=d.state==='Draft'||d.state==='AwaitingRatings';
+ return portal('developer','#/dev/deals',`${ph('Create / Manage Software Deal',d.name+'.','Every action below is a trigger in the SoftwareDeal state machine. Unavailable actions show the guard that blocks them.')}
+ <div class="stack">
+ <div class="panel white"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px"><h3>Lifecycle</h3><span class="muted" style="font-size:13px">Current state: ${badge(d.state)}</span></div>${smDiagram(d)}</div>
+ <div class="two" style="align-items:start">
+  <div class="panel white stack"><h3>Deal details</h3>
+   <div class="field"><label>Tagline</label><input class="inp" id="dt" value="${esc(d.tag)}" ${editable?'':'disabled'}></div>
+   <div class="form-grid"><div class="field"><label>Price (AUD) ${uml('price : Decimal')}</label><input class="inp" id="dp" type="number" value="${d.price}" ${editable?'':'disabled'}></div><div class="field"><label>Deal type ${uml('dealType : String')}</label><select class="inp" id="dty" ${editable?'':'disabled'}><option ${d.dealType==='Lifetime'?'selected':''}>Lifetime</option><option ${d.dealType==='Early Access'?'selected':''}>Early Access</option></select></div></div>
+   <div class="glist"><div class="row"><span class="k">isPublished ${uml('Boolean')}</span><span class="v">${d.state==='Published'}</span></div><div class="row"><span class="k">Ratings collected</span><span class="v num">${d.ratingCount} / ${S.threshold}</span></div><div class="row"><span class="k">Open purchases</span><span class="v num">${d.openPurchases}</span></div><div class="row"><span class="k">Days paused</span><span class="v num">${d.state==='Paused'?d.pausedDays:'—'}</span></div><div class="row"><span class="k">Developer verification</span><span class="v">${badge(S.dev.verificationStatus)}</span></div></div>
+  </div>
+  <div class="stack"><div class="panel white"><h3>Actions</h3><p class="sub">Triggers available from <b>${d.state}</b>.</p><div class="trig" style="margin-top:16px">
+   ${avail.length?avail.map(([k,x])=>{const ok=x.guard(d);return `<button class="tr-btn ${ok?'':'off'}" onclick="${ok?`fire('${d.id}','${k}')`:`toast('Blocked by guard ${x.g.replace(/"/g,'')}')`}"><b>${k}()</b><span>${x.g||'no guard'}${ok?'':' — not met'}</span></button>`}).join(''):`<p class="muted" style="font-size:14px;grid-column:1/-1">${d.state==='Suspended'?'Suspended by an Account Manager while a fraud report is investigated. Only the AM can reinstate or remove it.':d.state==='Ended'?'This deal’s life has ended.':'No developer triggers in this state. Automatic transitions may still fire.'}</p>`}
+  </div></div>
+  <div class="panel"><h3 style="font-size:15px">Simulate platform events</h3><p class="sub">Events from customers and time that drive automatic transitions.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px"><button class="btn btn-light btn-sm" onclick="sim('${d.id}','r5')">+5 customer ratings</button><button class="btn btn-light btn-sm" onclick="sim('${d.id}','buy')">+3 purchases</button><button class="btn btn-light btn-sm" onclick="sim('${d.id}','close')">Close open purchases</button><button class="btn btn-light btn-sm" onclick="sim('${d.id}','p90')">Pause for 90 days</button><button class="btn btn-light btn-sm" onclick="sim('${d.id}','clean')">Complete cleanup</button></div></div></div>
+ </div>
+ <div><div class="caps muted" style="margin-bottom:10px">Transition history</div><div class="tbl-wrap"><table class="tbl log"><thead><tr><th>From → To</th><th>Trigger</th><th>Guard</th><th>Effect</th><th>Type</th></tr></thead><tbody>${d.log.map(l=>`<tr><td><b>${l.from}</b> → <b>${l.to}</b></td><td class="mono">${l.trigger}</td><td class="mono">${l.guard||'—'}</td><td class="mono">${l.effect||'—'}</td><td>${l.type==='Automatic'?'<span class="badge b-bad">Automatic</span>':l.type==='Self-transition'?'<span class="badge b-info">Self</span>':`<span class="badge">${l.type}</span>`}</td></tr>`).join('')}</tbody></table></div></div>
+ </div>`)}
+
+/* ============ ACCOUNT MANAGER ============ */
+function pAmDevs(){
+ subnav('Assigned Developers','<a href="#/">GrowBase</a> › AM Console','');
+ const v=S.dev;const caseRow=v.am?`<tr style="background:#fbfbfd"><td><b>Lumen Labs</b><div class="muted" style="font-size:12px">Mia Chen · ${esc(v.email)}</div></td><td>${esc(v.software)}</td><td>${badge(v.stage==='moreEvidence'?'Additional Evidence Requested':v.verificationStatus)}</td><td class="hm">25 Oct 2026</td><td style="text-align:right">${v.stage==='review'?`<a class="btn btn-dark btn-sm" href="#/am/review">Review</a>`:`<a class="btn btn-light btn-sm" href="#/am/review">Open</a>`}</td></tr>`:'';
+ return portal('am','#/am/developers',`${ph('Manage Assigned Developers','Your portfolio.','You currently manage '+(S.assigned.length+(v.am?1:0))+' of 15 developers.')}
+ ${!v.am?`<div style="margin-bottom:18px">${notice('info','No onboarding cases waiting','<span class="muted">New cases appear here after a developer’s submission passes system validation. </span><a class="btn-ghost" href="javascript:setRole(\'developer\',\'#/dev/onboarding\')">Start one as Developer →</a>')}</div>`:''}
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Developer</th><th>Software</th><th>Status</th><th class="hm">Since</th><th></th></tr></thead><tbody>${caseRow}${S.assigned.map(a=>`<tr><td><b>${a.dev}</b></td><td>${a.sw}</td><td>${badge(a.status)}</td><td class="hm">${a.since}</td><td style="text-align:right"><button class="btn btn-ghost btn-sm" onclick="toast('Transfer to another AM — select an AM with capacity')">Transfer</button></td></tr>`).join('')}</tbody></table></div>
+ <div style="margin-top:26px"><div class="caps muted" style="margin-bottom:10px">Team capacity ${uml('AccountManager.status')}</div><div class="three">${S.ams.map(a=>`<div class="panel"><b>${a.name}</b><div style="margin:8px 0">${badge(a.status)}</div><div class="muted num" style="font-size:13px">${a.load}/${a.cap} developers</div><span class="meter" style="width:100%;margin-top:8px"><i style="width:${a.load/a.cap*100}%"></i></span></div>`).join('')}</div></div>`)}
+function pAmReview(){
+ const v=S.dev;subnav('Review Developer','<a href="#/am/developers">Assigned Developers</a> › Lumen Labs',v.am?badge(v.verificationStatus):'');
+ if(!v.am)return portal('am','#/am/developers',`${ph('Review Developer','No case selected.','')}${notice('info','Nothing to review yet','<a class="btn-ghost" href="#/am/developers">Back to developers</a>')}`);
+ const R=S.review;const fitL=['Software solves a real problem for GrowBase customers','Target audience matches our early-adopter base','Pricing suits a lifetime deal'];
+ const evL=[['website','Official website',v.website],['facebook','Facebook',v.facebook],['x','X',v.x],['youtube','YouTube',v.youtube]];
+ const fitDone=R.fit.every(Boolean);const evDone=evL.filter(e=>e[2]).every(e=>R.ev[e[0]]!==null);const ready=fitDone&&evDone;
+ const locked=v.stage!=='review';
+ return portal('am','#/am/developers',`${ph('Review Developer','Lumen Labs · '+esc(v.software)+'.','Both reviews run in parallel. Record an outcome once each is complete.')}
+ <div class="panel white" style="margin-bottom:18px"><dl class="kv"><dt>Developer</dt><dd>Mia Chen · ${esc(v.email)}</dd><dt>Category</dt><dd>${esc(v.category)}</dd><dt>Target audience</dt><dd>${esc(v.audience)}</dd><dt>Description</dt><dd>${esc(v.description)}</dd>${v.extra?`<dt>Extra evidence</dt><dd>${esc(v.extra)}</dd>`:''}</dl></div>
+ ${locked?`<div style="margin-bottom:18px">${notice(v.stage==='approved'?'ok':v.stage==='rejected'?'bad':'warn','Outcome recorded: '+v.verificationStatus,v.stage==='moreEvidence'?'<span class="muted">Waiting for the developer to provide more evidence.</span>':'<span class="muted">The developer has been notified.</span>')}</div>`:''}
+ <div class="par-label">fork</div>
+ <div class="par">
+  <div class="chk"><h4>Software / target-audience fit ${fitDone?'<span class="ok">Done</span>':''}</h4><ul>${fitL.map((l,i)=>`<li><label class="check"><input type="checkbox" ${R.fit[i]?'checked':''} ${locked?'disabled':''} onchange="S.review.fit[${i}]=this.checked;save();render()"> <span>${l}</span></label></li>`).join('')}</ul></div>
+  <div class="chk"><h4>Credibility evidence ${uml('trustProofLinks')} ${evDone?'<span class="ok">Done</span>':''}</h4><ul>${evL.map(([k,l,u])=>`<li><span>${l}<br><small class="muted mono">${u?esc(u):'not provided'}</small></span>${u?`<span style="display:flex;gap:4px"><button class="btn btn-sm ${R.ev[k]===true?'btn-dark':'btn-light'}" style="height:28px;padding:0 10px" ${locked?'disabled':''} onclick="S.review.ev.${k}=true;save();render()">Genuine</button><button class="btn btn-sm ${R.ev[k]===false?'btn-red':'btn-light'}" style="height:28px;padding:0 10px" ${locked?'disabled':''} onclick="S.review.ev.${k}=false;save();render()">Doubtful</button></span>`:'<span class="muted">—</span>'}</li>`).join('')}</ul></div>
+ </div>
+ <div class="par-label">join</div>
+ <div class="panel" style="margin-top:6px"><h3>Verification outcome?</h3><p class="sub">${ready?'Both reviews complete. Choose an outcome.':'Complete both parallel reviews to enable an outcome.'}</p>
+  <div class="field" style="margin-top:14px"><label>Note to developer</label><textarea class="inp" id="amn" ${locked?'disabled':''} placeholder="Required for additional-evidence requests and rejections">${Object.values(R.ev).includes(false)?'Your social channels show little activity. Please provide your ABN and evidence of active users.':''}</textarea><span class="err-t" id="amn-err"></span></div>
+  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="btn btn-light" ${!ready||locked?'disabled':''} onclick="amDecide('more')">[more evidence required] Request Additional Evidence</button><button class="btn btn-red" ${!ready||locked?'disabled':''} onclick="amDecide('reject')">[verification failed] Reject Developer</button><button class="btn btn-dark" ${!ready||locked||Object.values(R.ev).includes(false)?'disabled':''} onclick="amDecide('approve')">[verification passed] Approve Developer</button></div>
+  ${Object.values(R.ev).includes(false)&&!locked?'<p class="hint" style="margin-top:10px">Approve is disabled while any evidence is marked Doubtful.</p>':''}</div>`)}
+function amDecide(k){const n=($('#amn')||{}).value?.trim();const v=S.dev;
+ if(k!=='approve'&&!n){$('#amn').classList.add('err');$('#amn-err').textContent='Add a note so the developer knows what to do.';return}
+ if(k==='more'){v.stage='moreEvidence';v.verificationStatus='Additional Evidence Requested';v.amRequest=n;notify('developer','Request Additional Evidence','Priya Nair needs more information.')}
+ if(k==='reject'){v.stage='rejected';v.verificationStatus='Rejected';v.rejectReason=n;notify('developer','Onboarding outcome: Rejected','Reason: '+n)}
+ if(k==='approve'){v.stage='approved';v.verificationStatus='Verified';notify('developer','You’re verified','Your developer profile is active. You can now list deals.')}
+ save();toast('Outcome recorded — developer notified');render()}
+function pAmSupport(){
+ subnav('Support & Disputes','<a href="#/">GrowBase</a> › AM Console','');
+ const refunds=S.refunds.map(r=>{const d=deal(r.dealId);return `<tr><td><b class="mono">${r.id}</b><div class="muted" style="font-size:12px">${r.customer} · ${r.requestedAt}</div></td><td>${d.name}<div class="muted" style="font-size:12px">${r.type}: ${esc(r.reason)}</div></td><td>${badge(r.status)}</td><td style="text-align:right;white-space:nowrap">${r.status==='Pending'?`<button class="btn btn-light btn-sm" onclick="decideRefund('${r.id}',false)">Decline</button> <button class="btn btn-dark btn-sm" onclick="decideRefund('${r.id}',true)">Approve</button>`:''}</td></tr>`}).join('');
+ const reps=S.reports.map(r=>{const d=deal(r.dealId);return `<tr><td><b class="mono">${r.id}</b><div class="muted" style="font-size:12px">${r.kind}</div></td><td>${d.name} ${badge(d.state)}<div class="muted" style="font-size:12px">${r.detail}</div></td><td>${badge(r.status)}</td><td style="text-align:right;white-space:nowrap">${
+   listed(d)&&r.status==='Open'?`<button class="btn btn-red btn-sm" onclick="amFraud('${r.id}','suspend')">suspend()</button>`:
+   d.state==='Suspended'?`<button class="btn btn-light btn-sm" onclick="amFraud('${r.id}','reinstate')">reinstate()</button> <button class="btn btn-red btn-sm" onclick="amFraud('${r.id}','remove')">remove()</button>`:''}</td></tr>`}).join('');
+ return portal('am','#/am/support',`${ph('Handle Support / Dispute Issues','Support queue.','Approving a refund triggers Process Refund through the payment gateway (&lt;&lt;extend&gt;&gt; [refund approved]).')}
+ <div class="caps muted" style="margin-bottom:10px">Refund & dispute requests ${uml('RefundRequest.status')}</div><div class="tbl-wrap" style="margin-bottom:28px"><table class="tbl"><thead><tr><th>Request</th><th>Deal & reason</th><th>Status</th><th></th></tr></thead><tbody>${refunds||'<tr><td colspan=4 class="empty">No requests.</td></tr>'}</tbody></table></div>
+ <div class="caps muted" style="margin-bottom:10px">Fraud reports (fake ratings)</div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Report</th><th>Deal</th><th>Status</th><th></th></tr></thead><tbody>${reps||'<tr><td colspan=4 class="empty">No reports.</td></tr>'}</tbody></table></div>`)}
+function decideRefund(id,ok){const r=S.refunds.find(x=>x.id===id);
+ if(!ok){r.status='Declined';notify('customer','Request '+id+' declined','Your Account Manager reviewed it.');save();render();return}
+ r.status='Processing';save();toast('Process Refund — contacting payment gateway…');
+ setTimeout(()=>{r.status='Refunded';const d=deal(r.dealId);if(d.openPurchases>0)d.openPurchases--;notify('customer','Refund processed — '+id,'The amount has been returned to your card.');notify('developer','Refund issued on '+d.name,'Commission adjusted.');save();render()},1200);render()}
+function amFraud(id,a){const r=S.reports.find(x=>x.id===id);const d=deal(r.dealId);if(!d.log)d.log=[];
+ if(a==='suspend'){logT(d,'Listed','Suspended','suspend()','[fraudReported == true]','freezeSales(); entry / notifyDeveloper()','Triggered');d.state='Suspended';r.status='Investigating';notify('admin','Deal suspended: '+d.name,'Sales frozen pending investigation.')}
+ if(a==='reinstate'){r.status='Cleared';enterListed(d,'Suspended','reinstate()','[investigationCleared == true]','restoreListing()')}
+ if(a==='remove'){logT(d,'Suspended','Archived','remove()','[fraudConfirmed == true]','archiveDeal()','Triggered');d.state='Archived';r.status='Resolved'}
+ save();toast(a+'() → '+d.state);render()}
+
+/* ============ ADMIN ============ */
+function pPromos(){
+ subnav('Promotions & Commission','<a href="#/">GrowBase</a> › Admin','');
+ const q=deal('quillnote');const p=promoFor(q);const sale=p?q.price*(1-p.pct/100):q.price;
+ return portal('admin','#/admin/promotions',`${ph('Manage Promotions & Commission','Pricing.','Promotions change what customers pay. Commission is recalculated on the discounted price.')}
+ <div class="two" style="margin-bottom:18px;align-items:start"><div class="panel white"><h3>Commission model</h3><p class="sub">Flat rate applied to every sale.</p><div style="display:flex;align-items:baseline;gap:8px;margin-top:14px"><input class="inp num" id="cm" type="number" value="${S.commission}" style="width:100px;font-size:28px;font-weight:700;height:56px"><span style="font-size:28px;font-weight:700">%</span><button class="btn btn-light btn-sm" style="margin-left:auto" onclick="S.commission=Number($('#cm').value);save();toast('Commission set to '+S.commission+'%');render()">Save</button></div></div>
+ <div class="panel"><h3>Example · Quillnote</h3><div class="glist" style="margin-top:12px"><div class="row"><span class="k">List price</span><span class="v num">${money(q.price)}</span></div><div class="row"><span class="k">Promotion</span><span class="v">${p?p.code+' −'+p.pct+'%':'None'}</span></div><div class="row"><span class="k">Customer pays</span><span class="v num">${money(sale)}</span></div><div class="row"><span class="k">GrowBase (${S.commission}%)</span><span class="v num">${money(sale*S.commission/100)}</span></div><div class="row"><span class="k">Developer receives</span><span class="v num"><b style="color:var(--ink)">${money(sale*(1-S.commission/100))}</b></span></div></div></div></div>
+ <div class="tbl-wrap" style="margin-bottom:18px"><table class="tbl"><thead><tr><th>Code</th><th>Deal</th><th>Discount</th><th class="hm">Ends</th><th>Active</th></tr></thead><tbody>${S.promotions.map((p,i)=>`<tr><td class="mono"><b>${p.code}</b></td><td>${deal(p.deal)?.name||p.deal}</td><td class="num">${p.pct}%</td><td class="hm">${p.ends}</td><td><span class="switch ${p.active?'on':''}" onclick="S.promotions[${i}].active=!S.promotions[${i}].active;save();render()"></span></td></tr>`).join('')}</tbody></table></div>
+ <div class="panel white"><h3>New promotion</h3><div class="form-grid" style="margin-top:14px"><div class="field"><label>Code</label><input class="inp" id="npc" placeholder="SUMMER25"></div><div class="field"><label>Deal</label><select class="inp" id="npd">${S.deals.filter(listed).map(d=>`<option value="${d.id}">${d.name}</option>`).join('')}</select></div><div class="field"><label>Discount %</label><input class="inp" id="npp" type="number" value="25"></div><div class="field"><label>Ends</label><input class="inp" id="npe" value="31 Dec 2026"></div></div><span class="err-t" id="np-err"></span><div style="margin-top:14px"><button class="btn btn-dark" onclick="addPromo()">Create promotion</button></div></div>`)}
+function addPromo(){const c=$('#npc').value.trim().toUpperCase();const pct=Number($('#npp').value);if(!c||!(pct>0&&pct<90)){$('#np-err').textContent='Enter a code and a discount between 1 and 89%.';return}
+ S.promotions.forEach(p=>{if(p.deal===$('#npd').value)p.active=false});S.promotions.unshift({code:c,deal:$('#npd').value,pct,active:true,ends:$('#npe').value});save();toast('Promotion '+c+' created');render()}
+function pTrust(){
+ subnav('Ratings & Trust','<a href="#/">GrowBase</a> › Admin','');
+ return portal('admin','#/admin/trust',`${ph('Manage Ratings & Trust Controls','Trust.','Protect customers from fake 5-star ratings and developers from fake 1-star attacks.')}
+ <div class="glist" style="margin-bottom:18px"><div class="row"><span class="k">Hide ratings until threshold is reached</span><span class="switch ${S.hideUntil?'on':''}" onclick="S.hideUntil=!S.hideUntil;save();render()"></span></div><div class="row"><span class="k">Rating threshold</span><span class="v"><input class="inp num" type="number" value="${S.threshold}" style="width:80px;height:34px" onchange="S.threshold=Number(this.value)||20;S.deals.forEach(autoTransitions);save();render()"></span></div><div class="row"><span class="k">Only verified purchases can rate</span><span class="switch on"></span></div></div>
+ <div class="caps muted" style="margin-bottom:10px">Flagged ratings ${uml('Rating')}</div><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Rating</th><th>Deal</th><th class="hm">Signal</th><th>Status</th><th></th></tr></thead><tbody>${S.flagged.map((r,i)=>`<tr><td><span class="stars">${stars(r.stars)}</span><div class="muted" style="font-size:12px">“${r.text}” · ${r.who}</div></td><td>${deal(r.dealId).name}</td><td class="hm" style="font-size:13px">${r.why}</td><td>${badge(r.status)}</td><td style="text-align:right;white-space:nowrap">${r.status==='Flagged'?`<button class="btn btn-light btn-sm" onclick="S.flagged[${i}].status='Removed';save();render()">Remove</button> <button class="btn btn-ghost btn-sm" onclick="escalate(${i})">Escalate to AM</button>`:''}</td></tr>`).join('')}</tbody></table></div>`)}
+function escalate(i){const r=S.flagged[i];r.status='Investigating';S.reports.unshift({id:'FR-'+(120+S.reports.length),dealId:r.dealId,kind:r.stars>=5?'Fake 5-star rating':'Fake 1-star rating',detail:r.why,status:'Open'});notify('am','Fraud report escalated',deal(r.dealId).name+' — '+r.why);save();toast('Escalated — appears in AM support queue');render()}
+function pAffAdmin(){
+ subnav('Affiliate Program','<a href="#/">GrowBase</a> › Admin','');
+ return portal('admin','#/admin/affiliates',`${ph('Manage Affiliate Program','Affiliates.','')}
+ <div class="glist" style="margin-bottom:18px"><div class="row"><span class="k">Referral commission</span><span class="v"><input class="inp num" type="number" value="${S.affRate}" style="width:80px;height:34px" onchange="S.affRate=Number(this.value);save();toast('Referral rate set to '+S.affRate+'%')"> %</span></div><div class="row"><span class="k">Block self-referrals</span><span class="switch ${S.blockSelf?'on':''}" onclick="S.blockSelf=!S.blockSelf;save();render()"></span></div><div class="row"><span class="k">Payout schedule</span><span class="v">Monthly, 15th</span></div></div>
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Affiliate</th><th>Code</th><th class="hm">Clicks</th><th>Sales</th><th>Earned</th><th>Status</th></tr></thead><tbody>${S.affiliates.map((a,i)=>`<tr><td><b>${a.name}</b></td><td class="mono">${a.code}</td><td class="hm num">${a.clicks.toLocaleString()}</td><td class="num">${a.sales}</td><td class="num">${money(a.earned)}</td><td><button onclick="S.affiliates[${i}].status=S.affiliates[${i}].status==='Active'?'Suspended':'Active';save();render()">${badge(a.status)}</button></td></tr>`).join('')}</tbody></table></div>`)}
+function pRecruit(){
+ subnav('AM Recruitment','<a href="#/">GrowBase</a> › Admin','');
+ const next={Applied:'Interview',Interview:'Hired'};
+ return portal('admin','#/admin/recruitment',`${ph('Manage AM Recruitment','Hiring.','Recruit Account Managers ahead of demand. Current team capacity: '+S.ams.reduce((s,a)=>s+a.cap-a.load,0)+' open developer slots.')}
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Applicant</th><th class="hm">Experience</th><th>Applied</th><th>Stage</th><th></th></tr></thead><tbody>${S.applicants.map((a,i)=>`<tr><td><b>${esc(a.name)}</b></td><td class="hm">${esc(a.exp)}</td><td>${a.applied}</td><td>${badge(a.stage)}</td><td style="text-align:right;white-space:nowrap">${next[a.stage]?`<button class="btn btn-light btn-sm" onclick="advance(${i},'Declined')">Decline</button> <button class="btn btn-dark btn-sm" onclick="advance(${i},'${next[a.stage]}')">${next[a.stage]==='Hired'?'Hire':'Move to interview'}</button>`:''}</td></tr>`).join('')}</tbody></table></div>`)}
+function advance(i,s){const a=S.applicants[i];a.stage=s;if(S.application&&S.application.name===a.name){S.application.stage=s;notify('applicant','Application update',a.name+': '+s)}if(s==='Hired')S.ams.push({name:a.name,load:0,cap:15,status:'Active'});save();toast(a.name+' → '+s);render()}
+
+/* ============ GUIDE ============ */
+const UCMAP=[
+ ['Developer','Register / Manage Developer Profile','#/dev/profile','developer'],['Developer','Onboard Developer','#/dev/onboarding','developer'],['Verified Developer','Create / Manage Software Deal','#/dev/deals','developer'],
+ ['Customer','Browse Software Deals','#/deals','customer'],['Customer','Purchase Software Deal  «include» Process Payment','#/checkout/quillnote','customer'],['Customer','Rate Purchased Software','#/purchases','customer'],['Customer','Request Refund / Dispute  «extend» Process Refund','#/purchases','customer'],
+ ['Account Manager','Manage Assigned Developers','#/am/developers','am'],['Account Manager','Handle Support / Dispute Issues','#/am/support','am'],
+ ['GrowBase Admin','Manage Promotions & Commission','#/admin/promotions','admin'],['GrowBase Admin','Manage Ratings & Trust Controls','#/admin/trust','admin'],['GrowBase Admin','Manage Affiliate Program','#/admin/affiliates','admin'],['GrowBase Admin','Manage AM Recruitment','#/admin/recruitment','admin'],
+ ['Affiliate','Join Affiliate Program','#/affiliate','affiliate'],['Affiliate','Track Referrals & Commission','#/affiliate/track','affiliate'],['AM Applicant','Apply for AM Position','#/careers','applicant']];
+function pGuide(){
+ subnav('Use Case Map','<a href="#/">GrowBase</a> › Prototype','');
+ return `<div class="wrap fade" style="padding:44px 22px 100px">${ph('Overall Use Case Diagram','Every use case, one click away.','Each row is a use case from the Sprint 2 overall diagram. Clicking opens it as the right actor.')}
+ <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Actor</th><th>Use case</th><th></th></tr></thead><tbody>${UCMAP.map(([a,u,h,r])=>`<tr><td class="muted">${a}</td><td><b>${u}</b></td><td style="text-align:right"><a class="btn btn-light btn-sm" href="javascript:setRole('${r}','${h}')">Open</a></td></tr>`).join('')}</tbody></table></div>
+ <div class="panel" style="margin-top:28px"><h3>Suggested walkthrough</h3><ol style="margin:12px 0 0 18px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink2)"><li>Developer → Onboard Developer. Submit once with the empty Target audience to see <i>Request Missing Information</i>, then resubmit.</li><li>Account Manager → Review Developer: complete both parallel checks; try <i>Request Additional Evidence</i>, then Approve.</li><li>Developer → Create / Manage Software Deal → Inkwell: publish(), +5 ratings ×4 (automatic transition), pause(), resume(), remove().</li><li>Customer → buy a deal with code SPRING20, rate it, request a refund. Account Manager approves it (Process Refund).</li><li>Admin → Trust: escalate a flagged rating; Account Manager suspends the deal.</li></ol></div></div>`}
+function openDrawer(){
+ $('#sheet').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h3>Prototype guide</h3><button class="icon-btn" onclick="closeDrawer()">✕</button></div><p class="muted" style="margin:6px 0 22px;font-size:14px">GrowBase is a clickable prototype. Switch actor at any time — data persists in your browser.</p>
+ <div class="caps muted" style="margin-bottom:8px">Act as</div><div class="glist" style="margin-bottom:22px">${Object.entries(ROLES).map(([k,v])=>`<a class="row" href="javascript:closeDrawer();setRole('${k}')"><span class="k">${v.label}</span><span class="v">${S.role===k?'Current':'›'}</span></a>`).join('')}</div>
+ <div class="caps muted" style="margin-bottom:8px">Tools</div><div class="glist" style="margin-bottom:22px"><a class="row" href="javascript:closeDrawer();go('#/guide')"><span class="k">Use Case Map</span><span class="v">›</span></a><div class="row"><span class="k">Show UML class attributes</span><span class="switch ${S.uml?'on':''}" onclick="toggleUML();this.classList.toggle('on')"></span></div><a class="row" href="javascript:fastVerify()"><span class="k">Shortcut: make developer Verified</span><span class="v">›</span></a><a class="row" href="javascript:closeDrawer();resetDemo()"><span class="k" style="color:var(--bad)">Reset demo data</span><span class="v"></span></a></div>
+ <p class="hint">ISYS1039 Business Systems Analysis · Ziyi Wang (s4189631)</p>`;$('#drawer').classList.add('open')}
+function closeDrawer(){$('#drawer').classList.remove('open')}
+function fastVerify(){Object.assign(S.dev,{stage:'approved',verificationStatus:'Verified',am:'Priya Nair',audience:S.dev.audience||'Freelance writers and small content teams',youtube:S.dev.youtube||'youtube.com/@lumenlabs'});save();closeDrawer();toast('Developer is now Verified');render()}
+
+/* ============ ROUTER ============ */
+function render(){
+ const h=(location.hash||'#/').slice(1);const p=h.split('/').filter(Boolean);let html;
+ switch(p[0]){
+  case undefined:html=pHome();break;
+  case 'deals':html=pDeals();break;
+  case 'deal':html=pDeal(p[1]);break;
+  case 'checkout':html=pCheckout(p[1]);break;
+  case 'purchases':html=pPurchases();break;
+  case 'rate':html=pRate(p[1]);break;
+  case 'refund':html=pRefund(p[1]);break;
+  case 'affiliate':html=p[1]==='track'?pTrack():pAffiliate();break;
+  case 'careers':html=pCareers();break;
+  case 'dev':html=p[1]==='profile'?pDevProfile():p[1]==='onboarding'?pOnboard():p[1]==='deal'?pDevDeal(p[2]):pDevDeals();break;
+  case 'am':html=p[1]==='review'?pAmReview():p[1]==='support'?pAmSupport():pAmDevs();break;
+  case 'admin':html=p[1]==='trust'?pTrust():p[1]==='affiliates'?pAffAdmin():p[1]==='recruitment'?pRecruit():pPromos();break;
+  case 'guide':html=pGuide();break;
+  default:html=pHome();
+ }
+ $('#app').innerHTML=html;renderNav();
+ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}
+let lastHash=location.hash;
+window.addEventListener('hashchange',()=>{if(!location.hash.startsWith('#/checkout'))co={step:1,promo:'',applied:null};else if(lastHash.split('/')[2]!==location.hash.split('/')[2])co={step:1,promo:'',applied:null};lastHash=location.hash;render();window.scrollTo(0,0)});
+render();
+</script>
+</body>
+</html>
